@@ -15,8 +15,10 @@
 
 
 import os
-
+from tempest import config
 from tempest.test_discover import plugins
+
+from cyborg_tempest_plugin import config as project_config
 
 
 class CyborgTempestPlugin(plugins.TempestPlugin):
@@ -28,7 +30,12 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
         return full_test_dir, base_path
 
     def register_opts(self, conf):
-        pass
+        config.register_opt_group(
+            conf,
+            project_config.service_available_group,
+            project_config.ServiceAvailableGroup)
 
     def get_opt_lists(self):
-        pass
+        return [(
+            project_config.service_available_group.name,
+            project_config.ServiceAvailableGroup)]

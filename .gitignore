@@ -30,6 +30,10 @@ develop-eggs
 lib
 lib64
 
+# tempest config file and logs
+etc/
+tempest.log
+
 # Installer logs
 pip-log.txt
 

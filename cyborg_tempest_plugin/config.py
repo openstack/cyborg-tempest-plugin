@@ -13,4 +13,15 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-pass
+
+from oslo_config import cfg
+
+service_available_group = cfg.OptGroup(
+    name="service_available",
+    title="Available OpenStack Services"
+)
+
+ServiceAvailableGroup = [
+    cfg.BoolOpt("cyborg", default=True,
+                help="Whether or not cyborg is expected to be available")
+]
