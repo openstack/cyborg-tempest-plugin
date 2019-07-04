@@ -2,5 +2,41 @@
     templates:
       - check-requirements
       - tempest-plugin-jobs
+    check:
+      jobs:
+        - cyborg-tempest
     gate:
       queue: cyborg
+
+- job:
+    name: cyborg-tempest
+    voting: false
+    parent: devstack-tempest
+    timeout: 7800
+    required-projects:
+      - openstack/cyborg
+      - openstack/python-cyborgclient
+      - openstack/tempest
+      - openstack/cyborg-tempest-plugin
+    vars:
+      devstack_plugins:
+        cyborg: https://opendev.org/openstack/cyborg
+      devstack_services:
+        tempest: true
+        s-account: false
+        s-container: false
+        s-object: false
+        s-proxy: false
+        tls-proxy: false
+      devstack_localrc:
+        TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
+      tempest_test_regex: cyborg_tempest_plugin
+      tox_envlist: all
+    irrelevant-files:
+      - ^.*\.rst$
+      - ^doc/.*$
+      - ^setup.cfg$
+      - ^releasenotes/.*$
+      - ^(test-|)requirements.txt$
+      - ^.git.*$
+      - ^tox.ini$
