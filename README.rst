@@ -11,7 +11,7 @@ Note that this is a hard requirement.
 
 * Free software: Apache license
 * Documentation: https://docs.openstack.org/cyborg-tempest-plugin/latest
-* Source: https://git.openstack.org/cgit/cyborg/cyborg-tempest-plugin
+* Source: https://opendev.org/openstack/cyborg-tempest-plugin/
 * Bugs: https://storyboard.openstack.org/#!/project/968
 
 Features
