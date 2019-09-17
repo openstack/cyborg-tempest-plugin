@@ -5,6 +5,7 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-ipv6-only
     gate:
       queue: cyborg
 
@@ -13,12 +14,12 @@
     voting: false
     parent: devstack-tempest
     timeout: 7800
-    required-projects:
+    required-projects: &base_required_projects
       - openstack/cyborg
       - openstack/python-cyborgclient
       - openstack/tempest
       - openstack/cyborg-tempest-plugin
-    vars:
+    vars: &base_vars
       devstack_plugins:
         cyborg: https://opendev.org/openstack/cyborg
       devstack_services:
@@ -32,7 +33,7 @@
         TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
       tempest_test_regex: cyborg_tempest_plugin
       tox_envlist: all
-    irrelevant-files:
+    irrelevant-files: &base_irrelevant_files
       - ^.*\.rst$
       - ^doc/.*$
       - ^setup.cfg$
@@ -40,3 +41,14 @@
       - ^(test-|)requirements.txt$
       - ^.git.*$
       - ^tox.ini$
+
+- job:
+    name: cyborg-tempest-ipv6-only
+    parent: devstack-tempest-ipv6
+    description: |
+      Cyborg devstack tempest tests job for IPv6-only deployment
+    voting: false
+    timeout: 7800
+    required-projects: *base_required_projects
+    vars: *base_vars
+    irrelevant-files: *base_irrelevant_files
