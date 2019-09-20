@@ -10,7 +10,6 @@
 
 - job:
     name: cyborg-tempest
-    voting: false
     parent: devstack-tempest
     timeout: 7800
     required-projects:
