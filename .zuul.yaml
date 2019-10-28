@@ -11,6 +11,10 @@
 
 - job:
     name: cyborg-tempest
+    description: |
+      Cyborg devstack tempest tests job for < Ussuri release
+      run on python 2.
+    voting: false
     parent: devstack-tempest
     timeout: 7800
     required-projects: &base_required_projects
@@ -33,6 +37,57 @@
       tempest_test_regex: cyborg_tempest_plugin
       tox_envlist: all
     irrelevant-files: &base_irrelevant_files
+      - ^.*\.rst$
+      - ^doc/.*$
+      - ^setup.cfg$
+      - ^releasenotes/.*$
+      - ^(test-|)requirements.txt$
+      - ^.git.*$
+      - ^tox.ini$
+    # NOTE(gmann): This job is for < Ussuri for testing
+    # on py2.
+    branches:
+      - stable/ocata
+      - stable/pike
+      - stable/queens
+      - stable/rocky
+      - stable/stein
+      - stable/train
+
+- job:
+    name: cyborg-tempest
+    description: |
+      Cyborg devstack tempest tests job for >=Ussuri release
+      run on python 3.
+    voting: false
+    parent: devstack-tempest
+    timeout: 7800
+    required-projects:
+      - openstack/cyborg
+      - openstack/python-cyborgclient
+      - openstack/tempest
+      - openstack/cyborg-tempest-plugin
+    vars:
+      devstack_plugins:
+        cyborg: https://opendev.org/openstack/cyborg
+      devstack_services:
+        tempest: true
+        s-account: false
+        s-container: false
+        s-object: false
+        s-proxy: false
+        tls-proxy: false
+        c-api: false
+        c-bak: false
+        c-sch: false
+        c-vol: false
+        cinder: false
+      devstack_localrc:
+        TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
+        USE_PYTHON3: true
+      tempest_test_regex: cyborg_tempest_plugin
+      tox_envlist: all
+    irrelevant-files:
       - ^.*\.rst$
       - ^doc/.*$
       - ^setup.cfg$
