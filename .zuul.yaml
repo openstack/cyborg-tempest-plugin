@@ -59,7 +59,6 @@
     description: |
       Cyborg devstack tempest tests job for >=Ussuri release
       run on python 3.
-    voting: false
     parent: devstack-tempest
     timeout: 7800
     required-projects:
