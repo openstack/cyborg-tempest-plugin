@@ -124,7 +124,7 @@ class ScenarioTest(tempest.test.BaseTestCase):
                 {
                     "resources:FPGA": "1",
                     # TODO(Xinran): May need a config file to load correct
-                    # device profile here according to specfic env.
+                    # device profile here according to specific env.
                     # "trait:CUSTOM_FPGA_INTEL_ARRIA10": "required"
                     "trait:CUSTOM_FAKE_DEVICE": "required"
                 }
