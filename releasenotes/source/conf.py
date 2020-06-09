@@ -56,10 +56,8 @@ project = u'cyborg-tempest-plugin Release Notes'
 copyright = u'2017, OpenStack Developers'
 
 # openstackdocstheme options
-repository_name = 'cyborg/cyborg-tempest-plugin'
-bug_project = '968'
-bug_tag = ''
-html_last_updated_fmt = '%Y-%m-%d %H:%M'
+openstackdocs_repo_name = 'openstack/cyborg-tempest-plugin'
+openstackdocs_use_storyboard = True
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -101,7 +99,7 @@ exclude_patterns = []
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'native'
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
