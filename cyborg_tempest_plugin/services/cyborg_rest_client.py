@@ -48,6 +48,12 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.get(self.DP_URL)
         return self._response_helper(resp, body)
 
+    def delete_multiple_device_profile_by_names(self, *device_profile_names):
+        names = ','.join(device_profile_names)
+        url = self.DP_URL + "?value=" + names
+        resp, body = self.delete(url)
+        return self._response_helper(resp, body)
+
 
 def get_auth_provider(credentials, scope='project'):
     default_params = {
