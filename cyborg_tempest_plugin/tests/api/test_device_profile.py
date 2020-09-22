@@ -13,6 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from cyborg_tempest_plugin.services import cyborg_data
 from cyborg_tempest_plugin.tests.api import base
 
 
@@ -21,16 +22,7 @@ class TestDeviceProfileController(base.BaseAPITest):
     credentials = ['admin']
 
     def test_create_device_profile(self):
-        dp = [{
-            "name": "afaas_example_1",
-            "groups": [
-                {"resources:FPGA": "1",
-                 "trait:CUSTOM_FPGA_1": "required",
-                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-                 }
-                ]
-        }]
-
+        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
         response = self.os_admin.cyborg_client.create_device_profile(dp)
         self.assertEqual(dp[0]['name'], response['name'])
         self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,

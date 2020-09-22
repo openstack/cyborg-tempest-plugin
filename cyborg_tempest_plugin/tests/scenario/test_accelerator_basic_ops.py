@@ -18,6 +18,7 @@ from tempest.common import waiters
 from tempest import config
 from tempest.lib import decorators
 
+from cyborg_tempest_plugin.services import cyborg_data
 from cyborg_tempest_plugin.tests.scenario import manager
 
 CONF = config.CONF
@@ -47,7 +48,8 @@ class TestServerBasicOps(manager.ScenarioTest):
         keypair = self.create_keypair()
         security_group = self._create_security_group()
         # flavor = self.create_flavor()
-        response = self.create_device_profile()
+        response = self.create_device_profile(
+            cyborg_data.NORMAL_DEVICE_PROFILE_DATA1)
         device_profile_name = response["name"]
         accl_flavor = self.create_accel_flavor(device_profile_name)
         self.instance = self.create_server(

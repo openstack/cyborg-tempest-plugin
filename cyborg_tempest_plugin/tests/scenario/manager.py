@@ -115,22 +115,10 @@ class ScenarioTest(tempest.test.BaseTestCase):
         self.addCleanup(client.delete_flavor, flavor["id"])
         return flavor["id"]
 
-    def create_device_profile(self, client=None):
+    def create_device_profile(self, data, client=None):
         if not client:
             client = self.os_admin.cyborg_client
-        dp = [{
-            "name": "afaas_example_2",
-            "groups": [
-                {
-                    "resources:FPGA": "1",
-                    # TODO(Xinran): May need a config file to load correct
-                    # device profile here according to specific env.
-                    # "trait:CUSTOM_FPGA_INTEL_ARRIA10": "required"
-                    "trait:CUSTOM_FAKE_DEVICE": "required"
-                }
-            ]
-        }]
-        body = client.create_device_profile(dp)
+        body = client.create_device_profile(data)
         device_profile = body["name"]
         self.addCleanup(client.delete_device_profile, device_profile)
         return body
