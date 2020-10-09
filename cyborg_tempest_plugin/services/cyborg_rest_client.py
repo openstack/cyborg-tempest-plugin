@@ -54,6 +54,10 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.delete(url)
         return self._response_helper(resp, body)
 
+    def list_devices(self):
+        resp, body = self.get("/devices")
+        return self._response_helper(resp, body)
+
 
 def get_auth_provider(credentials, scope='project'):
     default_params = {
