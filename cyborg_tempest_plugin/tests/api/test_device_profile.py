@@ -28,6 +28,30 @@ class TestDeviceProfileController(base.BaseAPITest):
         self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
                         dp[0]['name'])
 
+    def test_delete_multiple_device_profile(self):
+        dp_one = [{
+            "name": "afaas_example_1",
+            "groups": [
+                {"resources:FPGA": "1",
+                 "trait:CUSTOM_FPGA_1": "required",
+                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
+                 }
+                ]
+        }]
+        dp_two = [{
+            "name": "afaas_example_2",
+            "groups": [
+                {"resources:FPGA": "1",
+                 "trait:CUSTOM_FPGA_1": "required",
+                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
+                 }
+                ]
+        }]
+        self.os_admin.cyborg_client.create_device_profile(dp_one)
+        self.os_admin.cyborg_client.create_device_profile(dp_two)
+        self.os_admin.cyborg_client.delete_multiple_device_profile_by_names(
+            dp_one[0]['name'], dp_two[0]['name'])
+
     @classmethod
     def resource_cleanup(cls):
         super(TestDeviceProfileController, cls).resource_cleanup()
