@@ -52,6 +52,41 @@ class TestDeviceProfileController(base.BaseAPITest):
         self.os_admin.cyborg_client.delete_multiple_device_profile_by_names(
             dp_one[0]['name'], dp_two[0]['name'])
 
+    def test_get_and_delete_device_profile(self):
+        dp = [{
+            "name": "afaas_example_2",
+            "groups": [
+                {"resources:FPGA": "1",
+                 "trait:CUSTOM_FPGA_1": "required",
+                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
+                 }
+                ]
+        }]
+
+        response = self.os_admin.cyborg_client.create_device_profile(dp)
+        device_profile_uuid = response['uuid']
+        self.assertEqual(dp[0]['name'], response['name'])
+        self.assertEqual(dp[0]['groups'], response['groups'])
+
+        response = self.os_admin.cyborg_client.list_device_profile()
+        device_profile_list = response['device_profiles']
+        device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
+        self.assertIn(device_profile_uuid, device_profile_uuid_list)
+
+        response = self.os_admin.cyborg_client.get_device_profile(
+            device_profile_uuid)
+        self.assertEqual(dp[0]['name'], response['name'])
+        self.assertEqual(
+            device_profile_uuid,
+            response['uuid'])
+
+        self.os_admin.cyborg_client.delete_device_profile_by_uuid(
+            device_profile_uuid)
+        response = self.os_admin.cyborg_client.list_device_profile()
+        device_profile_list = response['device_profiles']
+        device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
+        self.assertNotIn(device_profile_uuid, device_profile_uuid_list)
+
     @classmethod
     def resource_cleanup(cls):
         super(TestDeviceProfileController, cls).resource_cleanup()
