@@ -28,6 +28,7 @@ LOG = logging.getLogger(__name__)
 class CyborgRestClient(rest_client.RestClient):
     """Client class for accessing the cyborg API."""
     DP_URL = '/device_profiles'
+    AR_URL = '/accelerator_requests'
 
     def _response_helper(self, resp, body=None):
         if body:
@@ -65,6 +66,16 @@ class CyborgRestClient(rest_client.RestClient):
 
     def delete_device_profile_by_uuid(self, device_profile_uuid):
         url = self.DP_URL + "/" + device_profile_uuid
+        resp, body = self.delete(url)
+        return self._response_helper(resp, body)
+
+    def create_accelerator_request(self, body):
+        body = json.dump_as_bytes(body)
+        resp, body = self.post(self.AR_URL, body=body)
+        return self._response_helper(resp, body)
+
+    def delete_accelerator_request(self, accelerator_request_uuid):
+        url = self.AR_URL + "?arqs=" + accelerator_request_uuid
         resp, body = self.delete(url)
         return self._response_helper(resp, body)
 
