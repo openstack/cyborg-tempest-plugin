@@ -29,40 +29,15 @@ class TestDeviceProfileController(base.BaseAPITest):
                         dp[0]['name'])
 
     def test_delete_multiple_device_profile(self):
-        dp_one = [{
-            "name": "afaas_example_1",
-            "groups": [
-                {"resources:FPGA": "1",
-                 "trait:CUSTOM_FPGA_1": "required",
-                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-                 }
-                ]
-        }]
-        dp_two = [{
-            "name": "afaas_example_2",
-            "groups": [
-                {"resources:FPGA": "1",
-                 "trait:CUSTOM_FPGA_1": "required",
-                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-                 }
-                ]
-        }]
+        dp_one = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA1
+        dp_two = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA2
         self.os_admin.cyborg_client.create_device_profile(dp_one)
         self.os_admin.cyborg_client.create_device_profile(dp_two)
         self.os_admin.cyborg_client.delete_multiple_device_profile_by_names(
             dp_one[0]['name'], dp_two[0]['name'])
 
     def test_get_and_delete_device_profile(self):
-        dp = [{
-            "name": "afaas_example_2",
-            "groups": [
-                {"resources:FPGA": "1",
-                 "trait:CUSTOM_FPGA_1": "required",
-                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-                 }
-                ]
-        }]
-
+        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
         response = self.os_admin.cyborg_client.create_device_profile(dp)
         device_profile_uuid = response['uuid']
         self.assertEqual(dp[0]['name'], response['name'])
