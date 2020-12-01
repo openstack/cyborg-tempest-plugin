@@ -74,6 +74,15 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.post(self.AR_URL, body=body)
         return self._response_helper(resp, body)
 
+    def list_accelerator_request(self):
+        resp, body = self.get(self.AR_URL)
+        return self._response_helper(resp, body)
+
+    def get_accelerator_request(self, accelerator_request_uuid):
+        url = self.AR_URL + "/" + accelerator_request_uuid
+        resp, body = self.get(url)
+        return self._response_helper(resp, body)
+
     def delete_accelerator_request(self, accelerator_request_uuid):
         url = self.AR_URL + "?arqs=" + accelerator_request_uuid
         resp, body = self.delete(url)
