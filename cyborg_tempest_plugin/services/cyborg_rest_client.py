@@ -64,6 +64,15 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.get(url)
         return self._response_helper(resp, body)
 
+    def list_deployables(self):
+        resp, body = self.get("/deployables")
+        return self._response_helper(resp, body)
+
+    def get_deployables(self, deployables_uuid):
+        url = "/deployables/{}".format(deployables_uuid)
+        resp, body = self.get(url)
+        return self._response_helper(resp, body)
+
     def get_device_profile(self, device_profile_uuid):
         url = self.DP_URL + "/" + device_profile_uuid
         resp, body = self.get(url)
