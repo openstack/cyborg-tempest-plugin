@@ -31,3 +31,12 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         self.assertRaises(lib_exc.NotFound,
                           self.os_admin.cyborg_client.get_device_profile,
                           non_existent_id)
+
+    @test.attr(type=['negative', 'gate'])
+    def test_delete_non_existent_device_profile(self):
+        # delete the non-existent device_profile
+        non_existent_id = str(uuid.uuid4())
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.os_admin.cyborg_client.delete_device_profile_by_uuid,
+            non_existent_id)
