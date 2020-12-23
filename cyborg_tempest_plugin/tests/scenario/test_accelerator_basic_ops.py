@@ -49,7 +49,7 @@ class TestServerBasicOps(manager.ScenarioTest):
         security_group = self._create_security_group()
         # flavor = self.create_flavor()
         response = self.create_device_profile(
-            cyborg_data.NORMAL_DEVICE_PROFILE_DATA1)
+            cyborg_data.SCENARIO_DEVICE_PROFILE_DATA)
         device_profile_name = response["name"]
         accl_flavor = self.create_accel_flavor(device_profile_name)
         self.instance = self.create_server(

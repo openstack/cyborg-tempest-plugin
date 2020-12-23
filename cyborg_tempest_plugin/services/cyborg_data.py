@@ -22,6 +22,15 @@ NORMAL_DEVICE_PROFILE_DATA1 = [{
         }]
     }]
 
+SCENARIO_DEVICE_PROFILE_DATA = [{
+    "name": "fpga-num-1-scenario",
+    "groups": [
+        {
+            "resources:FPGA": "1",
+            "trait:CUSTOM_FAKE_DEVICE": "required"
+        }]
+    }]
+
 BATCH_DELETE_DEVICE_PROFILE_DATA1 = [{
     "name": "afaas_example_1",
     "groups": [
