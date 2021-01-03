@@ -52,8 +52,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'cyborg-tempest-plugin Release Notes'
-copyright = u'2017, OpenStack Developers'
+project = 'cyborg-tempest-plugin Release Notes'
+copyright = '2017, OpenStack Developers'
 
 # openstackdocstheme options
 openstackdocs_repo_name = 'openstack/cyborg-tempest-plugin'
@@ -211,8 +211,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     ('index', 'cyborg-tempest-pluginReleaseNotes.tex',
-     u'cyborg-tempest-plugin  Release Notes Documentation',
-     u'OpenStack Foundation', 'manual'),
+     'cyborg-tempest-plugin  Release Notes Documentation',
+     'OpenStack Foundation', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -242,8 +242,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'cyborg-tempest-pluginrereleasenotes',
-     u'cyborg-tempest-plugin  Release Notes Documentation',
-     [u'OpenStack Foundation'], 1)
+     'cyborg-tempest-plugin  Release Notes Documentation',
+     ['OpenStack Foundation'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -257,8 +257,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'cyborg-tempest-plugin ReleaseNotes',
-     u'cyborg-tempest-plugin Release Notes Documentation',
-     u'OpenStack Foundation', 'cyborg-tempest-pluginReleaseNotes',
+     'cyborg-tempest-plugin Release Notes Documentation',
+     'OpenStack Foundation', 'cyborg-tempest-pluginReleaseNotes',
      'One line description of project.',
      'Miscellaneous'),
 ]
