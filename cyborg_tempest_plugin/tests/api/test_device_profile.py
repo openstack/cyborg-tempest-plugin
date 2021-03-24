@@ -37,28 +37,34 @@ class TestDeviceProfileController(base.BaseAPITest):
             dp_one[0]['name'], dp_two[0]['name'])
 
     def test_get_and_delete_device_profile(self):
-        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
-        response = self.os_admin.cyborg_client.create_device_profile(dp)
-        device_profile_uuid = response['uuid']
-        self.assertEqual(dp[0]['name'], response['name'])
-        self.assertEqual(dp[0]['groups'], response['groups'])
+        # Removing the residual resources if it exists in the env
+        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        if len(list_resp['device_profiles']) >= 1:
+            self.os_admin.cyborg_client.delete_device_profile_by_uuid(
+                list_resp['device_profiles'][0]['uuid'])
 
-        response = self.os_admin.cyborg_client.list_device_profile()
-        device_profile_list = response['device_profiles']
+        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
+        create_resp = self.os_admin.cyborg_client.create_device_profile(dp)
+        device_profile_uuid = create_resp['uuid']
+        self.assertEqual(dp[0]['name'], create_resp['name'])
+        self.assertEqual(dp[0]['groups'], create_resp['groups'])
+
+        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        device_profile_list = list_resp['device_profiles']
         device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
         self.assertIn(device_profile_uuid, device_profile_uuid_list)
 
-        response = self.os_admin.cyborg_client.get_device_profile(
+        get_resp = self.os_admin.cyborg_client.get_device_profile(
             device_profile_uuid)
-        self.assertEqual(dp[0]['name'], response['name'])
+        self.assertEqual(dp[0]['name'], get_resp['name'])
         self.assertEqual(
             device_profile_uuid,
-            response['uuid'])
+            get_resp['uuid'])
 
         self.os_admin.cyborg_client.delete_device_profile_by_uuid(
             device_profile_uuid)
-        response = self.os_admin.cyborg_client.list_device_profile()
-        device_profile_list = response['device_profiles']
+        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        device_profile_list = list_resp['device_profiles']
         device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
         self.assertNotIn(device_profile_uuid, device_profile_uuid_list)
 
