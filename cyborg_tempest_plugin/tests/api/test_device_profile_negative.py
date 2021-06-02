@@ -22,6 +22,10 @@ from tempest import test
 
 class DeviceProfileNegativeTest(base.BaseAPITest):
 
+    @classmethod
+    def skip_checks(cls):
+        super(DeviceProfileNegativeTest, cls).skip_checks()
+
     credentials = ['admin']
 
     @test.attr(type=['negative', 'gate'])

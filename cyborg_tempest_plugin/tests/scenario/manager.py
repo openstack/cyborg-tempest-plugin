@@ -40,6 +40,12 @@ class ScenarioTest(tempest.test.BaseTestCase):
     credentials = ['primary', 'admin']
 
     @classmethod
+    def skip_checks(cls):
+        super(ScenarioTest, cls).skip_checks()
+        if not CONF.service_available.cyborg:
+            raise cls.skipException('Cyborg support is required')
+
+    @classmethod
     def setup_clients(cls):
         super(ScenarioTest, cls).setup_clients()
         # Clients

@@ -18,6 +18,10 @@ from cyborg_tempest_plugin.tests.api import base
 
 class TestAcceleratorRequestController(base.BaseAPITest):
 
+    @classmethod
+    def skip_checks(cls):
+        super(TestAcceleratorRequestController, cls).skip_checks()
+
     credentials = ['admin']
 
     def test_create_accelerator_request(self):
