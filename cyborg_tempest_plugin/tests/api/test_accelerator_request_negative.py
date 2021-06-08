@@ -31,3 +31,12 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         self.assertRaises(lib_exc.NotFound,
                           self.os_admin.cyborg_client.get_accelerator_request,
                           non_existent_id)
+
+    @test.attr(type=['negative', 'gate'])
+    def test_delete_non_existent_accelerator_request(self):
+        # delete the non-existent accelerator request
+        non_existent_id = str(uuid.uuid4())
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.os_admin.cyborg_client.delete_accelerator_request,
+            non_existent_id)
