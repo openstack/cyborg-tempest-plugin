@@ -31,7 +31,6 @@
         s-container: false
         s-object: false
         s-proxy: false
-        tls-proxy: false
       devstack_localrc:
         TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
       tempest_test_regex: cyborg_tempest_plugin
@@ -75,7 +74,6 @@
         s-container: false
         s-object: false
         s-proxy: false
-        tls-proxy: false
         c-api: false
         c-bak: false
         c-sch: false
