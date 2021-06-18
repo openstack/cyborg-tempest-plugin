@@ -20,14 +20,14 @@ class TestDevice(base.BaseAPITest):
 
     credentials = ['admin']
 
-    def test_list_get_device(self):
-        response = self.os_admin.cyborg_client.list_devices()
-        self.assertEqual('devices', list(response.keys())[0])
-
-        device_uuid = response['devices'][0]['uuid']
-        response = self.os_admin.cyborg_client.get_device(
-            device_uuid)
-        self.assertEqual(device_uuid, response['uuid'])
+    # def test_list_get_device(self):
+    #     response = self.os_admin.cyborg_client.list_devices()
+    #     self.assertEqual('devices', list(response.keys())[0])
+    #
+    #     device_uuid = response['devices'][0]['uuid']
+    #     response = self.os_admin.cyborg_client.get_device(
+    #         device_uuid)
+    #     self.assertEqual(device_uuid, response['uuid'])
 
     @classmethod
     def resource_cleanup(cls):
