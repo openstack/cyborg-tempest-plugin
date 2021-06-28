@@ -20,14 +20,14 @@ class TestDeployables(base.BaseAPITest):
 
     credentials = ['admin']
 
-    # def test_list_deployabcles(self):
-    #     response = self.os_admin.cyborg_client.list_deployables()
-    #     self.assertEqual('deployables', list(response.keys())[0])
-    #
-    #     deployables_uuid = response['deployables'][0]['uuid']
-    #     response = self.os_admin.cyborg_client.get_deployables(
-    #         deployables_uuid)
-    #     self.assertEqual(deployables_uuid, response['uuid'])
+    def test_list_deployabcles(self):
+        response = self.os_admin.cyborg_client.list_deployables()
+        self.assertEqual('deployables', list(response.keys())[0])
+
+        deployables_uuid = response['deployables'][0]['uuid']
+        response = self.os_admin.cyborg_client.get_deployables(
+            deployables_uuid)
+        self.assertEqual(deployables_uuid, response['uuid'])
 
     @classmethod
     def resource_cleanup(cls):

@@ -41,24 +41,26 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             self.os_admin.cyborg_client.delete_device_profile_by_uuid,
             non_existent_id)
 
-    # @test.attr(type=['negative', 'gate'])
-    # def test_create_device_profile_server_fault(self):
-    #     # create device profile name same
-    #     dp = [{
-    #         "name": "fpga_same_test",
-    #         "groups": [
-    #             {
-    #                 "resources:FPGA": "1",
-    #                 "trait:CUSTOM_FAKE_DEVICE": "required"
-    #             }]
-    #     }]
-    #     # create a device profile with named "fpga_same_test"
-    #     response = self.os_admin.cyborg_client.create_device_profile(dp)
-    #     self.assertEqual(dp[0]['name'], response['name'])
-    #     self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
-    #                     dp[0]['name'])
-    #
-    #     # create a same device profile with the same name "fpga_same_test"
-    #     self.assertRaises(lib_exc.ServerFault,
-    #                       self.os_admin.cyborg_client.create_device_profile,
-    #                       dp)
+    @test.attr(type=['negative', 'gate'])
+    def test_create_device_profile_server_fault(self):
+        # create device profile name same
+        dp = [{
+            "name": "fpga_same_test",
+            "groups": [
+                {
+                    "resources:FPGA": "1",
+                    "trait:CUSTOM_FAKE_DEVICE": "required"
+                }]
+        }]
+        # create a device profile with named "fpga_same_test"
+        response = self.os_admin.cyborg_client.create_device_profile(dp)
+        self.assertEqual(dp[0]['name'], response['name'])
+        self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
+                        dp[0]['name'])
+        dp[0]['name'] = 'new-fpga'
+        dp[0]['uuid'] = response['uuid']
+
+        # create a same device profile with the same uuid
+        self.assertRaises(lib_exc.ServerFault,
+                          self.os_admin.cyborg_client.create_device_profile,
+                          dp)
