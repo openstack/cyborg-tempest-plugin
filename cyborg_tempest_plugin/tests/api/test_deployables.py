@@ -20,7 +20,7 @@ class TestDeployables(base.BaseAPITest):
 
     credentials = ['admin']
 
-    def test_list_deployabcles(self):
+    def test_list_deployables(self):
         response = self.os_admin.cyborg_client.list_deployables()
         self.assertEqual('deployables', list(response.keys())[0])
 
