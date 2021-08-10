@@ -42,6 +42,7 @@ class TestDeviceProfileController(base.BaseAPITest):
         device_profile_uuid = create_resp['uuid']
         self.assertEqual(dp[0]['name'], create_resp['name'])
         self.assertEqual(dp[0]['groups'], create_resp['groups'])
+        self.assertEqual(dp[0]['description'], create_resp['description'])
 
         list_resp = self.os_admin.cyborg_client.list_device_profile()
         device_profile_list = list_resp['device_profiles']

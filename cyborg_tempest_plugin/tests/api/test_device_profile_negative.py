@@ -74,7 +74,8 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                 {
                     "resources:FPGA": "1",
                     "trait:CUSTOM_FAKE_DEVICE": "required"
-                }]
+                }],
+            "description": "null"
         }]
         # create a device profile with named "fpga_same_test"
         response = self.os_admin.cyborg_client.create_device_profile(dp)
