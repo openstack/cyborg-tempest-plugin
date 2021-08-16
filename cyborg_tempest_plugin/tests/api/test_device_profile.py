@@ -19,6 +19,10 @@ from cyborg_tempest_plugin.tests.api import base
 
 class TestDeviceProfileController(base.BaseAPITest):
 
+    @classmethod
+    def skip_checks(cls):
+        super(TestDeviceProfileController, cls).skip_checks()
+
     credentials = ['admin']
 
     def test_create_device_profile(self):

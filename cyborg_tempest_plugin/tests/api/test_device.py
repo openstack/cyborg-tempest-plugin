@@ -18,6 +18,10 @@ from cyborg_tempest_plugin.tests.api import base
 
 class TestDevice(base.BaseAPITest):
 
+    @classmethod
+    def skip_checks(cls):
+        super(TestDevice, cls).skip_checks()
+
     credentials = ['admin']
 
     def test_list_get_device(self):

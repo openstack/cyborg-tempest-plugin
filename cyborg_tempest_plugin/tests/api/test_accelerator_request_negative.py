@@ -22,6 +22,10 @@ from tempest import test
 
 class AcceleratorRequestNegativeTest(base.BaseAPITest):
 
+    @classmethod
+    def skip_checks(cls):
+        super(AcceleratorRequestNegativeTest, cls).skip_checks()
+
     credentials = ['admin']
 
     @test.attr(type=['negative', 'gate'])

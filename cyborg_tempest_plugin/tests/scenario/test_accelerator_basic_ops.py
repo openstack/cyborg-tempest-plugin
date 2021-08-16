@@ -37,6 +37,10 @@ class TestServerBasicOps(manager.ScenarioTest):
 
     """
 
+    @classmethod
+    def skip_checks(cls):
+        super(TestServerBasicOps, cls).skip_checks()
+
     def setUp(self):
         super(TestServerBasicOps, self).setUp()
 

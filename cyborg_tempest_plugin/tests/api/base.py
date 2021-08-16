@@ -33,6 +33,12 @@ class BaseAPITest(test.BaseTestCase):
     # client_manager = cyborgclient.Manager
 
     @classmethod
+    def skip_checks(cls):
+        super(BaseAPITest, cls).skip_checks()
+        if not CONF.service_available.cyborg:
+            raise cls.skipException('Cyborg support is required')
+
+    @classmethod
     def setup_clients(cls):
         super(BaseAPITest, cls).setup_clients()
         credentials = common_creds.get_configured_admin_credentials(
