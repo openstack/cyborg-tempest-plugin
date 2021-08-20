@@ -19,7 +19,8 @@ NORMAL_DEVICE_PROFILE_DATA1 = [{
         {
             "resources:FPGA": "1",
             "trait:CUSTOM_FAKE_DEVICE": "required"
-        }]
+        }],
+    "description": "fpga-num-1-dp1-desc"
     }]
 
 SCENARIO_DEVICE_PROFILE_DATA = [{
