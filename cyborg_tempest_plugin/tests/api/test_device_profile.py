@@ -35,10 +35,17 @@ class TestDeviceProfileController(base.BaseAPITest):
     def test_delete_multiple_device_profile(self):
         dp_one = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA1
         dp_two = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA2
-        self.os_admin.cyborg_client.create_device_profile(dp_one)
-        self.os_admin.cyborg_client.create_device_profile(dp_two)
+        dp_one_resp = self.os_admin.cyborg_client.create_device_profile(dp_one)
+        dp_two_resp = self.os_admin.cyborg_client.create_device_profile(dp_two)
+        self.assertEqual(dp_one[0]['name'], dp_one_resp['name'])
+        self.assertEqual(dp_two[0]['name'], dp_two_resp['name'])
         self.os_admin.cyborg_client.delete_multiple_device_profile_by_names(
             dp_one[0]['name'], dp_two[0]['name'])
+        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        device_profile_list = list_resp['device_profiles']
+        device_profile_name_list = [it['name'] for it in device_profile_list]
+        self.assertNotIn(dp_one[0]['name'], device_profile_name_list)
+        self.assertNotIn(dp_two[0]['name'], device_profile_name_list)
 
     def test_get_and_delete_device_profile(self):
         dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
