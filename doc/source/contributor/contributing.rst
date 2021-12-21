@@ -18,7 +18,7 @@ Communication
 Contacting the Core Team
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Please refer the `cyborg-tempest-plugin Core Team
-<https://review.opendev.org/admin/groups/5ecdd69a9647b2854f0effd73b98580164ab7bc9>`_ contacts.
+<https://review.opendev.org/#/admin/groups/1243,members>`_ contacts.
 
 New Feature Planning
 ~~~~~~~~~~~~~~~~~~~~
