@@ -22,7 +22,7 @@ Please refer the `cyborg-tempest-plugin Core Team
 
 New Feature Planning
 ~~~~~~~~~~~~~~~~~~~~
-cyborg-tempest-plugin features are tracked on `Launchpad Bugs <https://bugs.launchpad.net/openstack-cyborg>`_.
+cyborg-tempest-plugin features are tracked on `Launchpad Blueprints <https://blueprints.launchpad.net/openstack-cyborg>`_.
 
 Task Tracking
 ~~~~~~~~~~~~~
