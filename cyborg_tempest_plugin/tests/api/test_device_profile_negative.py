@@ -47,16 +47,16 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
 
     @test.attr(type=['negative', 'gate'])
     def test_create_device_profile_server_fault(self):
-        # create device profile name same
+        # create device profile with the same uuid
         dp = [{
-            "name": "fpga_same_test",
+            "name": "fpga_uuid_test",
             "groups": [
                 {
                     "resources:FPGA": "1",
                     "trait:CUSTOM_FAKE_DEVICE": "required"
                 }]
         }]
-        # create a device profile with named "fpga_same_test"
+        # create a device profile with named "fpga_uuid_test"
         response = self.os_admin.cyborg_client.create_device_profile(dp)
         self.assertEqual(dp[0]['name'], response['name'])
         self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
