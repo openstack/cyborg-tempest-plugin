@@ -91,3 +91,21 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         self.assertRaises(lib_exc.Conflict,
                           self.os_admin.cyborg_client.create_device_profile,
                           dp)
+
+    @test.attr(type=['negative', 'gate'])
+    def test_create_device_profile_name_is_null(self):
+        # create device profile name is null
+        dp = [{
+            "name": "",
+            "groups": [
+                {
+                    "resources:FPGA": "1",
+                    "trait:CUSTOM_FAKE_DEVICE": "required"
+                }],
+            "description": "null"
+        }]
+
+        # create device profile with name null
+        self.assertRaises(lib_exc.ServerFault,
+                          self.os_admin.cyborg_client.create_device_profile,
+                          dp)
