@@ -5,6 +5,7 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-xena
         - cyborg-tempest-wallaby
         - cyborg-tempest-victoria
         - cyborg-tempest-ussuri
@@ -106,6 +107,11 @@
     required-projects: *base_required_projects
     vars: *base_vars
     irrelevant-files: *base_irrelevant_files
+
+- job:
+    name: cyborg-tempest-xena
+    parent: cyborg-tempest
+    override-checkout: stable/xena
 
 - job:
     name: cyborg-tempest-wallaby
