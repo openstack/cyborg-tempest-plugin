@@ -22,7 +22,6 @@ from oslo_log import log
 from tempest.common import credentials_factory as common_creds
 from tempest import config
 from tempest.lib.common.utils import data_utils
-from tempest.lib.common.utils import test_utils
 from tempest.lib import exceptions as lib_exc
 import tempest.test
 
@@ -133,57 +132,3 @@ class ScenarioTest(tempest.scenario.manager.ScenarioTest):
         specs = {"accel:device_profile": dp_name}
         self.update_flavor_extra_specs(specs, flavor)
         return flavor["id"]
-
-    def _create_loginable_secgroup_rule(self, secgroup_id=None):
-        _client = self.compute_security_groups_client
-        _client_rules = self.compute_security_group_rules_client
-        if secgroup_id is None:
-            sgs = _client.list_security_groups()['security_groups']
-            for sg in sgs:
-                if sg['name'] == 'default':
-                    secgroup_id = sg['id']
-
-        # These rules are intended to permit inbound ssh and icmp
-        # traffic from all sources, so no group_id is provided.
-        # Setting a group_id would only permit traffic from ports
-        # belonging to the same security group.
-        rulesets = [
-            {
-                # ssh
-                'ip_protocol': 'tcp',
-                'from_port': 22,
-                'to_port': 22,
-                'cidr': '0.0.0.0/0',
-            },
-            {
-                # ping
-                'ip_protocol': 'icmp',
-                'from_port': -1,
-                'to_port': -1,
-                'cidr': '0.0.0.0/0',
-            }
-        ]
-        rules = list()
-        for ruleset in rulesets:
-            sg_rule = _client_rules.create_security_group_rule(
-                parent_group_id=secgroup_id, **ruleset)['security_group_rule']
-            rules.append(sg_rule)
-        return rules
-
-    def _create_security_group(self):
-        # Create security group
-        sg_name = data_utils.rand_name(self.__class__.__name__)
-        sg_desc = sg_name + " description"
-        secgroup = self.compute_security_groups_client.create_security_group(
-            name=sg_name, description=sg_desc)['security_group']
-        self.assertEqual(secgroup['name'], sg_name)
-        self.assertEqual(secgroup['description'], sg_desc)
-        self.addCleanup(
-            test_utils.call_and_ignore_notfound_exc,
-            self.compute_security_groups_client.delete_security_group,
-            secgroup['id'])
-
-        # Add rules to the security group
-        self._create_loginable_secgroup_rule(secgroup['id'])
-
-        return secgroup

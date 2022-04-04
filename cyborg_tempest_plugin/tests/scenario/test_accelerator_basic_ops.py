@@ -50,7 +50,7 @@ class TestServerBasicOps(manager.ScenarioTest):
     def test_server_basic_ops(self):
         """Test for booting a VM with attached accelerator"""
         keypair = self.create_keypair()
-        security_group = self._create_security_group()
+        security_group = self.create_security_group()
         # flavor = self.create_flavor()
         response = self.create_device_profile(
             cyborg_data.SCENARIO_DEVICE_PROFILE_DATA)
