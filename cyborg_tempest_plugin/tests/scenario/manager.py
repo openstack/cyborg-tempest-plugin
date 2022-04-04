@@ -22,7 +22,6 @@ from oslo_log import log
 from tempest.common import credentials_factory as common_creds
 from tempest import config
 from tempest.lib.common.utils import data_utils
-from tempest.lib import exceptions as lib_exc
 import tempest.test
 
 
@@ -34,8 +33,6 @@ LOG = log.getLogger(__name__)
 class ScenarioTest(tempest.scenario.manager.ScenarioTest):
     """Base class for scenario tests. Uses tempest own clients. """
 
-    credentials = ['primary', 'admin']
-
     @classmethod
     def skip_checks(cls):
         super(ScenarioTest, cls).skip_checks()
@@ -45,34 +42,11 @@ class ScenarioTest(tempest.scenario.manager.ScenarioTest):
     @classmethod
     def setup_clients(cls):
         super(ScenarioTest, cls).setup_clients()
-        # Clients
+
         cls.admin_flavors_client = cls.admin_manager.flavors_client
-        if CONF.service_available.glance:
-            # Check if glance v1 is available to determine which client to use.
-            if CONF.image_feature_enabled.api_v1:
-                cls.image_client = cls.os_primary.image_client
-            elif CONF.image_feature_enabled.api_v2:
-                cls.image_client = cls.os_primary.image_client_v2
-            else:
-                raise lib_exc.InvalidConfiguration(
-                    'Either api_v1 or api_v2 must be True in '
-                    '[image-feature-enabled].')
-        # Compute image client
-        cls.compute_images_client = cls.os_primary.compute_images_client
-        cls.keypairs_client = cls.os_primary.keypairs_client
-        # Nova security groups client
-        cls.compute_security_groups_client = (
-            cls.os_primary.compute_security_groups_client)
-        cls.compute_security_group_rules_client = (
-            cls.os_primary.compute_security_group_rules_client)
-        cls.servers_client = cls.os_primary.servers_client
-        # Neutron network client
-        cls.networks_client = cls.os_primary.networks_client
-        cls.ports_client = cls.os_primary.ports_client
 
         credentials = common_creds.get_configured_admin_credentials(
             'identity_admin')
-
         auth_prov = get_auth_provider(credentials)
         cls.os_admin.cyborg_client = (
             clients.CyborgRestClient(auth_prov,
