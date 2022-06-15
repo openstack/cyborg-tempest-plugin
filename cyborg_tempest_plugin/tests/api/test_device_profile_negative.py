@@ -47,7 +47,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
 
     @test.attr(type=['negative', 'gate'])
     def test_create_device_profile_server_fault(self):
-        # create device profile with the same uuid
+        # create device profile using an existing dp uuid
         dp = [{
             "name": "fpga_uuid_test",
             "groups": [
@@ -64,7 +64,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         dp[0]['name'] = 'new-fpga'
         dp[0]['uuid'] = response['uuid']
 
-        # create a same device profile with the same uuid
+        # create a same device profile with an existing dp uuid
         self.assertRaises(lib_exc.ServerFault,
                           self.os_admin.cyborg_client.create_device_profile,
                           dp)
