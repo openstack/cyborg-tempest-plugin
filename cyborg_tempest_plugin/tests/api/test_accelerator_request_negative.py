@@ -44,3 +44,12 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             lib_exc.NotFound,
             self.os_admin.cyborg_client.delete_accelerator_request,
             non_existent_id)
+
+    @test.attr(type=['negative', 'gate'])
+    def test_create_accelerator_request_device_profile_name_is_null(self):
+        # create the accelerator request with device profile name null
+        dp_mame = {"device_profile_name": ""}
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.os_admin.cyborg_client.create_accelerator_request,
+            dp_mame)
