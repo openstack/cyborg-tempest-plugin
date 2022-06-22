@@ -46,6 +46,15 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             non_existent_id)
 
     @test.attr(type=['negative', 'gate'])
+    def test_delete_multiple_non_existent_device_profile(self):
+        # delete multiple non_existent device_profile
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.os_admin.cyborg_client.
+            delete_multiple_device_profile_by_names,
+            'fake_device_name1', 'fake_device_name2')
+
+    @test.attr(type=['negative', 'gate'])
     def test_create_device_profile_server_fault(self):
         # create device profile using an existing dp uuid
         dp = [{
