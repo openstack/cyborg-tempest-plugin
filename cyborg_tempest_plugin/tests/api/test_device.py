@@ -33,6 +33,17 @@ class TestDevice(base.BaseAPITest):
             device_uuid)
         self.assertEqual(device_uuid, response['uuid'])
 
+    def test_list_devices_filter_by_type(self):
+        response = self.os_admin.cyborg_client.list_devices()
+        type_name = response['devices'][0]['type']
+
+        # list devices filter by type
+        params = {"type": type_name}
+        response = self.os_admin.cyborg_client.list_devices(params=params)
+        self.assertNotEmpty(response['devices'])
+        for dv in response['devices']:
+            self.assertEqual(type_name, dv['type'])
+
     @classmethod
     def resource_cleanup(cls):
         super(TestDevice, cls).resource_cleanup()

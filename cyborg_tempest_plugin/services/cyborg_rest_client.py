@@ -15,6 +15,7 @@
 
 from oslo_log import log as logging
 from oslo_serialization import jsonutils as json
+from urllib import parse
 
 from tempest import config
 from tempest.lib import auth
@@ -55,8 +56,11 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.delete(url)
         return self._response_helper(resp, body)
 
-    def list_devices(self):
-        resp, body = self.get("/devices")
+    def list_devices(self, params=None):
+        url = "/devices"
+        if params is not None:
+            url += '?%s' % parse.urlencode(params)
+        resp, body = self.get(url)
         return self._response_helper(resp, body)
 
     def get_device(self, device_uuid):
