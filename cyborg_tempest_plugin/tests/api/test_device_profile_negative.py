@@ -55,6 +55,15 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             'fake_device_name1', 'fake_device_name2')
 
     @test.attr(type=['negative', 'gate'])
+    def test_delete_device_profile_name_null(self):
+        # delete the device_profile name is null
+        name = ""
+        self.assertRaises(
+            lib_exc.BadRequest,
+            self.os_admin.cyborg_client.delete_device_profile,
+            name)
+
+    @test.attr(type=['negative', 'gate'])
     def test_create_device_profile_server_fault(self):
         # create device profile using an existing dp uuid
         dp = [{
