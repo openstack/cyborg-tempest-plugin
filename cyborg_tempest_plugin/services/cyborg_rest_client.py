@@ -106,6 +106,11 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.delete(url)
         return self._response_helper(resp, body)
 
+    def delete_accelerator_request_by_instance_uuid(self, instance_uuid):
+        url = self.AR_URL + "?instance=" + instance_uuid
+        resp, body = self.delete(url)
+        return self._response_helper(resp, body)
+
     def get_deployable(self, deployable_uuid):
         resp, body = self.get("/deployables/%s" % deployable_uuid)
         return self._response_helper(resp, body)

@@ -83,6 +83,23 @@ class TestAcceleratorRequestController(base.BaseAPITest):
         uuid_list = [it['uuid'] for it in response['arqs']]
         self.assertNotIn(accelerator_request_uuid, uuid_list)
 
+    def test_delete_accelerator_request_by_instance_uuid(self):
+        # list accelerator request
+        response = self.os_admin.cyborg_client.list_accelerator_request()
+        instance_uuid_list = [it['instance_uuid'] for it in response['arqs']]
+        if instance_uuid_list:
+            # delete_accelerator_request
+            self.os_admin.cyborg_client.\
+                delete_accelerator_request_by_instance_uuid(
+                    instance_uuid_list[0])
+            response = self.os_admin.cyborg_client.list_accelerator_request()
+            instance_uuid_list_again = [it['instance_uuid'] for
+                                        it in response['arqs']]
+            self.assertNotIn(instance_uuid_list[0], instance_uuid_list_again)
+        else:
+            raise self.skipException('not accelerator request with '
+                                     'instance uuid')
+
     @classmethod
     def resource_cleanup(cls):
         super(TestAcceleratorRequestController, cls).resource_cleanup()
