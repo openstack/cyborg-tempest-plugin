@@ -2,7 +2,7 @@
 Cyborg Tempest Plugin
 =====================
 
-This is a cyorg tempest plugin package. Tests can be run as a tempest plugin
+This is a cyborg tempest plugin package. Tests can be run as a tempest plugin
 against any cyborg-enabled OpenStack cloud.
 
 Please fill here a long description which must be at least 3 lines wrapped on
