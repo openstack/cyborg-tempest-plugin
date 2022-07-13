@@ -44,6 +44,12 @@ class TestDevice(base.BaseAPITest):
         for dv in response['devices']:
             self.assertEqual(type_name, dv['type'])
 
+    def test_list_devices_filter_by_non_exist_type(self):
+        # list devices filter by non exist type
+        params = {"type": "fake_type"}
+        response = self.os_admin.cyborg_client.list_devices(params=params)
+        self.assertEmpty(response['devices'])
+
     def test_list_devices_filter_by_vendor(self):
         response = self.os_admin.cyborg_client.list_devices()
         vendor = response['devices'][0]['vendor']
