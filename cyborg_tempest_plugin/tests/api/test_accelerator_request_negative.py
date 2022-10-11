@@ -62,3 +62,12 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             lib_exc.NotFound,
             self.os_admin.cyborg_client.create_accelerator_request,
             dp_mame)
+
+    @test.attr(type=['negative', 'gate'])
+    def test_create_accelerator_request_with_special_characters(self):
+        # create the accelerator request with special characters
+        dp_mame = {"device_profile_name": "!@#$%^&*()=-[]"}
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.os_admin.cyborg_client.create_accelerator_request,
+            dp_mame)
