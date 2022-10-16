@@ -164,14 +164,17 @@
 - job:
     name: cyborg-tempest-yoga
     parent: cyborg-tempest
+    nodeset: openstack-single-node-focal
     override-checkout: stable/yoga
 
 - job:
     name: cyborg-tempest-xena
     parent: cyborg-tempest
+    nodeset: openstack-single-node-focal
     override-checkout: stable/xena
 
 - job:
     name: cyborg-tempest-wallaby
     parent: cyborg-tempest
+    nodeset: openstack-single-node-focal
     override-checkout: stable/wallaby
