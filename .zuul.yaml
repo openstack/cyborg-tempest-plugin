@@ -6,6 +6,7 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-zed
         - cyborg-tempest-yoga
         - cyborg-tempest-xena
         - cyborg-tempest-wallaby
@@ -13,6 +14,7 @@
     gate:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-zed
         - cyborg-tempest-yoga
         - cyborg-tempest-xena
         - cyborg-tempest-wallaby
@@ -160,6 +162,12 @@
     required-projects: *base_required_projects
     vars: *base_vars
     irrelevant-files: *base_irrelevant_files
+
+- job:
+    name: cyborg-tempest-zed
+    parent: cyborg-tempest
+    nodeset: openstack-single-node-focal
+    override-checkout: stable/zed
 
 - job:
     name: cyborg-tempest-yoga
