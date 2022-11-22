@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import random
+import string
 import uuid
 
 from cyborg_tempest_plugin.tests.api import base
@@ -124,6 +126,26 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         }]
 
         # create device profile with name null
+        self.assertRaises(lib_exc.ServerFault,
+                          self.os_admin.cyborg_client.create_device_profile,
+                          dp)
+
+    @test.attr(type=['negative', 'gate'])
+    def test_create_device_profile_name_to_long(self):
+        # create device profile name character is too long
+        name_value = "".join(random.sample(
+            string.ascii_letters * 10 + string.digits * 10, 256))
+        dp = [{
+            "name": name_value,
+            "groups": [
+                {
+                    "resources:FPGA": "1",
+                    "trait:CUSTOM_FAKE_DEVICE": "required"
+                }],
+            "description": "null"
+        }]
+
+        # create device profile with character is too long
         self.assertRaises(lib_exc.ServerFault,
                           self.os_admin.cyborg_client.create_device_profile,
                           dp)
