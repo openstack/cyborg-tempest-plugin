@@ -78,6 +78,12 @@ class TestDevice(base.BaseAPITest):
         for dv in response['devices']:
             self.assertEqual(hostname, dv['hostname'])
 
+    def test_list_devices_filter_by_non_exist_hostname(self):
+        # list devices filter by non exist hostname
+        params = {"hostname": "fake_hostname"}
+        response = self.os_admin.cyborg_client.list_devices(params=params)
+        self.assertEmpty(response['devices'])
+
     @classmethod
     def resource_cleanup(cls):
         super(TestDevice, cls).resource_cleanup()
