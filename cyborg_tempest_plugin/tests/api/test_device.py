@@ -84,6 +84,24 @@ class TestDevice(base.BaseAPITest):
         response = self.os_admin.cyborg_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
+    def test_list_devices_filter_by_combine_args(self):
+        # list devices filter by combine args
+        response = self.os_admin.cyborg_client.list_devices()
+        type_name = response['devices'][0]['type']
+        vendor = response['devices'][0]['vendor']
+        hostname = response['devices'][0]['hostname']
+        params = {
+            "type": type_name,
+            "hostname": hostname,
+            "vendor": vendor
+        }
+        response = self.os_admin.cyborg_client.list_devices(params=params)
+        self.assertNotEmpty(response['devices'])
+        for dv in response['devices']:
+            self.assertEqual(type_name, dv['type'])
+            self.assertEqual(vendor, dv['vendor'])
+            self.assertEqual(hostname, dv['hostname'])
+
     @classmethod
     def resource_cleanup(cls):
         super(TestDevice, cls).resource_cleanup()
