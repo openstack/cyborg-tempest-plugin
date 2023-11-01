@@ -30,6 +30,7 @@ class CyborgRestClient(rest_client.RestClient):
     """Client class for accessing the cyborg API."""
     DP_URL = '/device_profiles'
     AR_URL = '/accelerator_requests'
+    ATTR_URL = '/attributes'
 
     def _response_helper(self, resp, body=None):
         if body:
@@ -113,6 +114,15 @@ class CyborgRestClient(rest_client.RestClient):
 
     def get_deployable(self, deployable_uuid):
         resp, body = self.get("/deployables/%s" % deployable_uuid)
+        return self._response_helper(resp, body)
+
+    def list_attributes(self):
+        resp, body = self.get(self.ATTR_URL)
+        return self._response_helper(resp, body)
+
+    def get_attributes(self, attr_id):
+        url = "/attributes/{}".format(attr_id)
+        resp, body = self.get(url)
         return self._response_helper(resp, body)
 
 
