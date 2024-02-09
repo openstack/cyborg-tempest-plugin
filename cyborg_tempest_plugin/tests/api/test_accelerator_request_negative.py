@@ -16,8 +16,8 @@
 import uuid
 
 from cyborg_tempest_plugin.tests.api import base
+from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
-from tempest import test
 
 
 class AcceleratorRequestNegativeTest(base.BaseAPITest):
@@ -28,7 +28,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
 
     credentials = ['admin']
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_get_non_existent_accelerator_request(self):
         # get the non-existent accelerator request
         non_existent_id = str(uuid.uuid4())
@@ -36,7 +36,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
                           self.os_admin.cyborg_client.get_accelerator_request,
                           non_existent_id)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_delete_non_existent_accelerator_request(self):
         # delete the non-existent accelerator request
         non_existent_id = str(uuid.uuid4())
@@ -45,7 +45,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             self.os_admin.cyborg_client.delete_accelerator_request,
             non_existent_id)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_accelerator_request_device_profile_name_is_null(self):
         # create the accelerator request with device profile name null
         dp_mame = {"device_profile_name": ""}
@@ -54,7 +54,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             self.os_admin.cyborg_client.create_accelerator_request,
             dp_mame)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_accelerator_request_device_profile_name_non_exist(self):
         # create the accelerator request with device profile name non_exist
         dp_mame = {"device_profile_name": "fake_dp"}
@@ -63,7 +63,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             self.os_admin.cyborg_client.create_accelerator_request,
             dp_mame)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_accelerator_request_with_special_characters(self):
         # create the accelerator request with special characters
         dp_mame = {"device_profile_name": "!@#$%^&*()=-[]"}

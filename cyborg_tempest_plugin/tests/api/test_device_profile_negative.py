@@ -18,8 +18,8 @@ import string
 import uuid
 
 from cyborg_tempest_plugin.tests.api import base
+from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
-from tempest import test
 
 
 class DeviceProfileNegativeTest(base.BaseAPITest):
@@ -30,7 +30,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
 
     credentials = ['admin']
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_get_non_existent_device_profile(self):
         # get the non-existent device_profile
         non_existent_id = str(uuid.uuid4())
@@ -38,7 +38,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           self.os_admin.cyborg_client.get_device_profile,
                           non_existent_id)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_delete_non_existent_device_profile(self):
         # delete the non-existent device_profile
         non_existent_id = str(uuid.uuid4())
@@ -47,7 +47,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             self.os_admin.cyborg_client.delete_device_profile_by_uuid,
             non_existent_id)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_delete_multiple_non_existent_device_profile(self):
         # delete multiple non_existent device_profile
         self.assertRaises(
@@ -56,7 +56,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             delete_multiple_device_profile_by_names,
             'fake_device_name1', 'fake_device_name2')
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_delete_device_profile_name_null(self):
         # delete the device_profile name is null
         name = ""
@@ -65,7 +65,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             self.os_admin.cyborg_client.delete_device_profile,
             name)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_device_profile_server_fault(self):
         # create device profile using an existing dp uuid
         dp = [{
@@ -89,7 +89,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           self.os_admin.cyborg_client.create_device_profile,
                           dp)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_device_profile_conflict(self):
         # create device profile name same
         dp = [{
@@ -112,7 +112,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           self.os_admin.cyborg_client.create_device_profile,
                           dp)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_device_profile_name_is_null(self):
         # create device profile name is null
         dp = [{
@@ -130,7 +130,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           self.os_admin.cyborg_client.create_device_profile,
                           dp)
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_create_device_profile_name_to_long(self):
         # create device profile name character is too long
         name_value = "".join(random.sample(

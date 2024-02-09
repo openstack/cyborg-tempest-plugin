@@ -16,8 +16,8 @@
 import uuid
 
 from cyborg_tempest_plugin.tests.api import base
+from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
-from tempest import test
 
 
 class DeployableNegativeTest(base.BaseAPITest):
@@ -28,7 +28,7 @@ class DeployableNegativeTest(base.BaseAPITest):
 
     credentials = ['admin']
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_get_non_existent_deployable(self):
         # get the non-existent deployable
         non_existent_id = str(uuid.uuid4())
