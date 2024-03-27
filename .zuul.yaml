@@ -6,20 +6,18 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-2024-1
+        - cyborg-tempest-2023-2
         - cyborg-tempest-2023-1
         - cyborg-tempest-zed
-        - cyborg-tempest-yoga
-        - cyborg-tempest-xena
-        - cyborg-tempest-wallaby
         - cyborg-tempest-ipv6-only
     gate:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-2024-1
+        - cyborg-tempest-2023-2
         - cyborg-tempest-2023-1
         - cyborg-tempest-zed
-        - cyborg-tempest-yoga
-        - cyborg-tempest-xena
-        - cyborg-tempest-wallaby
         - cyborg-tempest-ipv6-only
 
 - job:
@@ -166,6 +164,18 @@
     irrelevant-files: *base_irrelevant_files
 
 - job:
+    name: cyborg-tempest-2024-1
+    parent: cyborg-tempest
+    nodeset: openstack-single-node-jammy
+    override-checkout: stable/2024.1
+
+- job:
+    name: cyborg-tempest-2023-2
+    parent: cyborg-tempest
+    nodeset: openstack-single-node-jammy
+    override-checkout: stable/2023.2
+
+- job:
     name: cyborg-tempest-2023-1
     parent: cyborg-tempest
     nodeset: openstack-single-node-jammy
@@ -176,21 +186,3 @@
     parent: cyborg-tempest
     nodeset: openstack-single-node-focal
     override-checkout: stable/zed
-
-- job:
-    name: cyborg-tempest-yoga
-    parent: cyborg-tempest
-    nodeset: openstack-single-node-focal
-    override-checkout: stable/yoga
-
-- job:
-    name: cyborg-tempest-xena
-    parent: cyborg-tempest
-    nodeset: openstack-single-node-focal
-    override-checkout: stable/xena
-
-- job:
-    name: cyborg-tempest-wallaby
-    parent: cyborg-tempest
-    nodeset: openstack-single-node-focal
-    override-checkout: stable/wallaby
