@@ -43,7 +43,7 @@ class ScenarioTest(tempest.scenario.manager.ScenarioTest):
     def setup_clients(cls):
         super(ScenarioTest, cls).setup_clients()
 
-        cls.admin_flavors_client = cls.admin_manager.flavors_client
+        cls.admin_flavors_client = cls.os_admin.flavors_client
 
         credentials = common_creds.get_configured_admin_credentials(
             'identity_admin')
