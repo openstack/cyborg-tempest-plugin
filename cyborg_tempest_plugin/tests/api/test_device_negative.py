@@ -16,8 +16,8 @@
 import uuid
 
 from cyborg_tempest_plugin.tests.api import base
+from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
-from tempest import test
 
 
 class DeviceNegativeTest(base.BaseAPITest):
@@ -28,7 +28,7 @@ class DeviceNegativeTest(base.BaseAPITest):
 
     credentials = ['admin']
 
-    @test.attr(type=['negative', 'gate'])
+    @decorators.attr(type=['negative', 'gate'])
     def test_get_non_existent_device(self):
         # get the non-existent device
         non_existent_id = str(uuid.uuid4())
