@@ -6,18 +6,14 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-2024-2
         - cyborg-tempest-2024-1
         - cyborg-tempest-2023-2
         - cyborg-tempest-2023-1
-        - cyborg-tempest-zed
         - cyborg-tempest-ipv6-only
     gate:
       jobs:
         - cyborg-tempest
-        - cyborg-tempest-2024-1
-        - cyborg-tempest-2023-2
-        - cyborg-tempest-2023-1
-        - cyborg-tempest-zed
         - cyborg-tempest-ipv6-only
 
 - job:
@@ -164,6 +160,12 @@
     irrelevant-files: *base_irrelevant_files
 
 - job:
+    name: cyborg-tempest-2024-2
+    parent: cyborg-tempest
+    nodeset: openstack-single-node-jammy
+    override-checkout: stable/2024.2
+
+- job:
     name: cyborg-tempest-2024-1
     parent: cyborg-tempest
     nodeset: openstack-single-node-jammy
@@ -180,9 +182,3 @@
     parent: cyborg-tempest
     nodeset: openstack-single-node-jammy
     override-checkout: stable/2023.1
-
-- job:
-    name: cyborg-tempest-zed
-    parent: cyborg-tempest
-    nodeset: openstack-single-node-focal
-    override-checkout: stable/zed
