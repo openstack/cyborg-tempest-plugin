@@ -6,6 +6,7 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-jammy
         - cyborg-tempest-2024-2
         - cyborg-tempest-2024-1
         - cyborg-tempest-2023-2
@@ -13,6 +14,7 @@
     gate:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-jammy
         - cyborg-tempest-ipv6-only
 
 - job:
@@ -157,6 +159,14 @@
     required-projects: *base_required_projects
     vars: *base_vars
     irrelevant-files: *base_irrelevant_files
+
+# TODO(gmann): As per the 2025.1 testing runtime, we need to run at least
+# one job on jammy. This job can be removed in 2025.2 cycle.
+- job:
+    name: cyborg-tempest-jammy
+    description: This is integrated job testing on Ubuntu jammy(22.04)
+    parent: cyborg-tempest
+    nodeset: openstack-single-node-jammy
 
 - job:
     name: cyborg-tempest-2024-2
