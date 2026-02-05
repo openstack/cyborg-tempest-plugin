@@ -2,6 +2,8 @@
 Cyborg Tempest Plugin
 =====================
 
+.. image:: https://governance.openstack.org/tc/badges/cyborg-tempest-plugin.svg
+
 This is a cyborg tempest plugin package. Tests can be run as a tempest plugin
 against any cyborg-enabled OpenStack cloud.
 
@@ -12,9 +14,4 @@ Note that this is a hard requirement.
 * Free software: Apache license
 * Documentation: https://docs.openstack.org/cyborg-tempest-plugin/latest
 * Source: https://opendev.org/openstack/cyborg-tempest-plugin/
-* Bugs: https://storyboard.openstack.org/#!/project/968
-
-Features
---------
-
-* TODO
+* Bugs: https://bugs.launchpad.net/openstack-cyborg
