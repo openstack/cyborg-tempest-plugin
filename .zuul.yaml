@@ -97,7 +97,6 @@
         cinder: false
       devstack_localrc:
         TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
-        USE_PYTHON3: true
       tempest_test_regex: cyborg_tempest_plugin
       tox_envlist: all
     irrelevant-files:
@@ -137,7 +136,6 @@
         cinder: false
       devstack_localrc:
         TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
-        USE_PYTHON3: true
       tempest_test_regex: cyborg_tempest_plugin
       tox_envlist: all
     irrelevant-files:
