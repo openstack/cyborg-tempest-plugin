@@ -18,97 +18,6 @@
 - job:
     name: cyborg-tempest
     description: |
-      Cyborg devstack tempest tests job for < Ussuri release
-      run on python 2.
-    voting: false
-    parent: devstack-tempest
-    timeout: 7800
-    required-projects: &base_required_projects
-      - openstack/cyborg
-      - openstack/python-cyborgclient
-      - openstack/tempest
-      - name: openstack/cyborg-tempest-plugin
-        override-checkout: 1.4.0
-    vars: &base_vars
-      devstack_plugins:
-        cyborg: https://opendev.org/openstack/cyborg
-      devstack_services:
-        tempest: true
-        s-account: false
-        s-container: false
-        s-object: false
-        s-proxy: false
-      devstack_localrc:
-        TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
-      tempest_test_regex: cyborg_tempest_plugin
-      tox_envlist: all
-    irrelevant-files: &base_irrelevant_files
-      - ^.*\.rst$
-      - ^doc/.*$
-      - ^setup.cfg$
-      - ^releasenotes/.*$
-      - ^(test-|)requirements.txt$
-      - ^.git.*$
-      - ^tox.ini$
-    # NOTE(gmann): This job is for < Ussuri for testing
-    # on py2.
-    branches:
-      - stable/ocata
-      - stable/pike
-      - stable/queens
-      - stable/rocky
-      - stable/stein
-      - stable/train
-
-- job:
-    name: cyborg-tempest
-    description: |
-      Cyborg devstack tempest tests job for >=Ussuri release
-      run on python 3.
-    parent: devstack-tempest
-    timeout: 7800
-    required-projects:
-      - openstack/cyborg
-      - openstack/python-cyborgclient
-      - openstack/tempest
-      - name: openstack/cyborg-tempest-plugin
-        override-checkout: 1.4.0
-    # NOTE(gmann): This job is for ussuri and victoria
-    # where Tempest 26.1.0 is used so cyborg-tempest-plugin
-    # 1.4.0 is used instead of master.
-    branches:
-      - stable/ussuri
-      - stable/victoria
-    vars:
-      devstack_plugins:
-        cyborg: https://opendev.org/openstack/cyborg
-      devstack_services:
-        tempest: true
-        s-account: false
-        s-container: false
-        s-object: false
-        s-proxy: false
-        c-api: false
-        c-bak: false
-        c-sch: false
-        c-vol: false
-        cinder: false
-      devstack_localrc:
-        TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
-      tempest_test_regex: cyborg_tempest_plugin
-      tox_envlist: all
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^doc/.*$
-      - ^setup.cfg$
-      - ^releasenotes/.*$
-      - ^(test-|)requirements.txt$
-      - ^.git.*$
-      - ^tox.ini$
-
-- job:
-    name: cyborg-tempest
-    description: |
       Cyborg devstack tempest tests job for >=Ussuri release
       run on python 3.
     parent: devstack-tempest
@@ -118,7 +27,7 @@
       - openstack/python-cyborgclient
       - openstack/tempest
       - openstack/cyborg-tempest-plugin
-    vars:
+    vars: &base_vars
       devstack_plugins:
         cyborg: https://opendev.org/openstack/cyborg
       devstack_services:
@@ -136,7 +45,7 @@
         TEMPEST_PLUGINS: "/opt/stack/cyborg-tempest-plugin"
       tempest_test_regex: cyborg_tempest_plugin
       tox_envlist: all
-    irrelevant-files:
+    irrelevant-files: &base_irrelevant_files
       - ^.*\.rst$
       - ^doc/.*$
       - ^setup.cfg$
@@ -155,6 +64,7 @@
     required-projects: *base_required_projects_master
     vars: *base_vars
     irrelevant-files: *base_irrelevant_files
+
 
 # TODO(gmann): As per the 2025.1 testing runtime, we need to run at least
 # one job on jammy. This job is running in 2025.1 gate so remove it once
