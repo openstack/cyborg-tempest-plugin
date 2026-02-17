@@ -113,7 +113,7 @@
       run on python 3.
     parent: devstack-tempest
     timeout: 7800
-    required-projects:
+    required-projects: &base_required_projects_master
       - openstack/cyborg
       - openstack/python-cyborgclient
       - openstack/tempest
@@ -152,7 +152,7 @@
       Cyborg devstack tempest tests job for IPv6-only deployment
     voting: false
     timeout: 7800
-    required-projects: *base_required_projects
+    required-projects: *base_required_projects_master
     vars: *base_vars
     irrelevant-files: *base_irrelevant_files
 
