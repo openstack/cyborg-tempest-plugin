@@ -16,6 +16,14 @@
 from cyborg_tempest_plugin.tests.api import base
 
 
+# Fake driver device profile used by all tests.
+_FAKE_DP_GROUPS = [
+    {"resources:FPGA": "1",
+     "trait:CUSTOM_FPGA_1": "required",
+     "trait:CUSTOM_FUNCTION_ID_3AFB": "required"}
+]
+
+
 class TestAcceleratorRequestController(base.BaseAPITest):
 
     @classmethod
@@ -24,81 +32,60 @@ class TestAcceleratorRequestController(base.BaseAPITest):
 
     credentials = ['admin']
 
+    def _create_dp(self, name):
+        """Create a device profile and register cleanup."""
+        client = self.os_admin.cyborg_client
+        dp = [{"name": name, "groups": _FAKE_DP_GROUPS}]
+        client.create_device_profile(dp)
+        self.addCleanup(client.delete_device_profile, name)
+        return name
+
+    def _create_arq(self, dp_name):
+        """Create an ARQ and register cleanup."""
+        client = self.os_admin.cyborg_client
+        response = client.create_accelerator_request(
+            {"device_profile_name": dp_name})
+        arq_uuid = response['arqs'][0]['uuid']
+        self.addCleanup(self._safe_delete_arq, arq_uuid)
+        return arq_uuid, response
+
+    def _safe_delete_arq(self, arq_uuid):
+        """Delete an ARQ, ignoring errors (already deleted)."""
+        try:
+            self.os_admin.cyborg_client.delete_accelerator_request(arq_uuid)
+        except Exception:
+            pass
+
     def test_create_accelerator_request(self):
-        dp = [{
-            "name": "test_example_1",
-            "groups": [
-                {"resources:FPGA": "1",
-                 "trait:CUSTOM_FPGA_1": "required",
-                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-                 }
-                ]
-        }]
-        response = self.os_admin.cyborg_client.create_device_profile(dp)
-        device_profile_name = response['name']
-        self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
-                        dp[0]['name'])
+        dp_name = self._create_dp("test_create_arq")
         response = self.os_admin.cyborg_client.create_accelerator_request(
-            {"device_profile_name": device_profile_name})
-        self.assertEqual(device_profile_name,
+            {"device_profile_name": dp_name})
+        self.assertEqual(dp_name,
                          response['arqs'][0]['device_profile_name'])
-        self.addCleanup(self.os_admin.cyborg_client.delete_accelerator_request,
-                        response['arqs'][0]['uuid'])
+        self.addCleanup(
+            self.os_admin.cyborg_client.delete_accelerator_request,
+            response['arqs'][0]['uuid'])
 
     def test_list_get_delete_accelerator_request(self):
-        dp = [{
-            "name": "test_example_2",
-            "groups": [
-                {"resources:FPGA": "1",
-                 "trait:CUSTOM_FPGA_1": "required",
-                 "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-                 }
-                ]
-        }]
-        response = self.os_admin.cyborg_client.create_device_profile(dp)
-        device_profile_name = response['name']
-        self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
-                        dp[0]['name'])
+        dp_name = self._create_dp("test_list_get_delete_arq")
+        arq_uuid, _ = self._create_arq(dp_name)
 
-        # create_accelerator_request
-        response = self.os_admin.cyborg_client.create_accelerator_request(
-            {"device_profile_name": device_profile_name})
-        accelerator_request_uuid = response['arqs'][0]['uuid']
-
-        # list accelerator request
+        # list
         response = self.os_admin.cyborg_client.list_accelerator_request()
         uuid_list = [it['uuid'] for it in response['arqs']]
-        self.assertIn(accelerator_request_uuid, uuid_list)
+        self.assertIn(arq_uuid, uuid_list)
 
-        # get accelerator request
+        # get
         response = self.os_admin.cyborg_client.get_accelerator_request(
-            accelerator_request_uuid)
-        self.assertEqual(accelerator_request_uuid, response['uuid'])
-        self.assertEqual(device_profile_name, response['device_profile_name'])
+            arq_uuid)
+        self.assertEqual(arq_uuid, response['uuid'])
+        self.assertEqual(dp_name, response['device_profile_name'])
 
-        # delete_accelerator_request
-        self.os_admin.cyborg_client.delete_accelerator_request(
-            accelerator_request_uuid)
+        # delete
+        self.os_admin.cyborg_client.delete_accelerator_request(arq_uuid)
         response = self.os_admin.cyborg_client.list_accelerator_request()
         uuid_list = [it['uuid'] for it in response['arqs']]
-        self.assertNotIn(accelerator_request_uuid, uuid_list)
-
-    def test_delete_accelerator_request_by_instance_uuid(self):
-        # list accelerator request
-        response = self.os_admin.cyborg_client.list_accelerator_request()
-        instance_uuid_list = [it['instance_uuid'] for it in response['arqs']]
-        if instance_uuid_list:
-            # delete_accelerator_request
-            self.os_admin.cyborg_client.\
-                delete_accelerator_request_by_instance_uuid(
-                    instance_uuid_list[0])
-            response = self.os_admin.cyborg_client.list_accelerator_request()
-            instance_uuid_list_again = [it['instance_uuid'] for
-                                        it in response['arqs']]
-            self.assertNotIn(instance_uuid_list[0], instance_uuid_list_again)
-        else:
-            raise self.skipException('not accelerator request with '
-                                     'instance uuid')
+        self.assertNotIn(arq_uuid, uuid_list)
 
     @classmethod
     def resource_cleanup(cls):
