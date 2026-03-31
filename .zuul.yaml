@@ -6,6 +6,7 @@
     check:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-2026-1
         - cyborg-tempest-2025-2
         - cyborg-tempest-2025-1
         - cyborg-tempest-2024-2
@@ -74,6 +75,12 @@
     description: This is integrated job testing on Ubuntu jammy(22.04)
     parent: cyborg-tempest
     nodeset: openstack-single-node-jammy
+
+- job:
+    name: cyborg-tempest-2026-1
+    parent: cyborg-tempest
+    nodeset: openstack-single-node-noble
+    override-checkout: stable/2026.1
 
 - job:
     name: cyborg-tempest-2025-2
