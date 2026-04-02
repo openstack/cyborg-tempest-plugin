@@ -9,11 +9,13 @@
         - cyborg-tempest-2026-1
         - cyborg-tempest-2025-2
         - cyborg-tempest-2025-1
-        - cyborg-tempest-2024-2
         - cyborg-tempest-ipv6-only
     gate:
       jobs:
         - cyborg-tempest
+        - cyborg-tempest-2026-1
+        - cyborg-tempest-2025-2
+        - cyborg-tempest-2025-1
         - cyborg-tempest-ipv6-only
 
 - job:
@@ -60,21 +62,11 @@
     parent: devstack-tempest-ipv6
     description: |
       Cyborg devstack tempest tests job for IPv6-only deployment
-    voting: false
+    voting: true
     timeout: 7800
     required-projects: *base_required_projects_master
     vars: *base_vars
     irrelevant-files: *base_irrelevant_files
-
-
-# TODO(gmann): As per the 2025.1 testing runtime, we need to run at least
-# one job on jammy. This job is running in 2025.1 gate so remove it once
-# 2025.1 is EOL.
-- job:
-    name: cyborg-tempest-jammy
-    description: This is integrated job testing on Ubuntu jammy(22.04)
-    parent: cyborg-tempest
-    nodeset: openstack-single-node-jammy
 
 - job:
     name: cyborg-tempest-2026-1
@@ -94,8 +86,13 @@
     nodeset: openstack-single-node-noble
     override-checkout: stable/2025.1
 
+# TODO(gmann): As per the 2025.1 testing runtime, we need to run at least
+# one job on jammy. This job is running in 2025.1 gate so remove it once
+# 2025.1 is EOL.
+# NOTE(sean): That means we have to wait until 2027.1 to remove it.
+# The dependency comes form the 2025.1 stable branch of cyborg.
 - job:
-    name: cyborg-tempest-2024-2
+    name: cyborg-tempest-jammy
+    description: This is integrated job testing on Ubuntu jammy(22.04)
     parent: cyborg-tempest
     nodeset: openstack-single-node-jammy
-    override-checkout: stable/2024.2
