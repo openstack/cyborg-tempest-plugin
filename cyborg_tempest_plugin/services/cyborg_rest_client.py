@@ -32,6 +32,15 @@ class CyborgRestClient(rest_client.RestClient):
     AR_URL = '/accelerator_requests'
     ATTR_URL = '/attributes'
 
+    service_token = None
+
+    def get_headers(self, accept_type=None, send_type=None):
+        headers = super(CyborgRestClient, self).get_headers(
+            accept_type=accept_type, send_type=send_type)
+        if self.service_token:
+            headers['X-Service-Token'] = self.service_token
+        return headers
+
     def _response_helper(self, resp, body=None):
         if body:
             body = json.loads(body)
@@ -110,6 +119,22 @@ class CyborgRestClient(rest_client.RestClient):
     def delete_accelerator_request_by_instance_uuid(self, instance_uuid):
         url = self.AR_URL + "?instance=" + instance_uuid
         resp, body = self.delete(url)
+        return self._response_helper(resp, body)
+
+    def bind_accelerator_request(self, arq_uuid, hostname,
+                                 device_rp_uuid, instance_uuid):
+        """Bind an ARQ to an instance via PATCH."""
+        body = {
+            arq_uuid: [
+                {"path": "/hostname", "op": "add", "value": hostname},
+                {"path": "/device_rp_uuid", "op": "add",
+                 "value": device_rp_uuid},
+                {"path": "/instance_uuid", "op": "add",
+                 "value": instance_uuid},
+            ]
+        }
+        body = json.dump_as_bytes(body)
+        resp, body = self.patch(self.AR_URL, body=body)
         return self._response_helper(resp, body)
 
     def get_deployable(self, deployable_uuid):
