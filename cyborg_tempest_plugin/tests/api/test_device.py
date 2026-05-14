@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from tempest.lib import decorators
+
 from cyborg_tempest_plugin.tests.api import base
 
 
@@ -24,6 +26,7 @@ class TestDevice(base.BaseAPITest):
 
     credentials = ['admin']
 
+    @decorators.idempotent_id('6f4bf672-1b8e-4e3e-8562-de64093bad52')
     def test_list_get_device(self):
         response = self.os_admin.cyborg_client.list_devices()
         self.assertEqual('devices', list(response.keys())[0])
@@ -33,6 +36,7 @@ class TestDevice(base.BaseAPITest):
             device_uuid)
         self.assertEqual(device_uuid, response['uuid'])
 
+    @decorators.idempotent_id('61096874-0b10-4b12-954f-f03eb0e59f5d')
     def test_list_devices_filter_by_type(self):
         response = self.os_admin.cyborg_client.list_devices()
         type_name = response['devices'][0]['type']
@@ -44,12 +48,14 @@ class TestDevice(base.BaseAPITest):
         for dv in response['devices']:
             self.assertEqual(type_name, dv['type'])
 
+    @decorators.idempotent_id('f55cc5a7-bfc0-49a2-bcc9-d4b512efd2c6')
     def test_list_devices_filter_by_non_exist_type(self):
         # list devices filter by non exist type
         params = {"type": "fake_type"}
         response = self.os_admin.cyborg_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
+    @decorators.idempotent_id('f501b343-a7e4-41a7-8e02-ab6725714bbf')
     def test_list_devices_filter_by_vendor(self):
         response = self.os_admin.cyborg_client.list_devices()
         vendor = response['devices'][0]['vendor']
@@ -61,12 +67,14 @@ class TestDevice(base.BaseAPITest):
         for dv in response['devices']:
             self.assertEqual(vendor, dv['vendor'])
 
+    @decorators.idempotent_id('8dba0f88-2db6-4001-9e99-fe668512eb09')
     def test_list_devices_filter_by_non_exist_vendor(self):
         # list devices filter by non exist vendor
         params = {"vendor": "fake_vendor"}
         response = self.os_admin.cyborg_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
+    @decorators.idempotent_id('ae34fb47-6079-4cc4-817d-5954a149d0d8')
     def test_list_devices_filter_by_hostname(self):
         response = self.os_admin.cyborg_client.list_devices()
         hostname = response['devices'][0]['hostname']
@@ -78,12 +86,14 @@ class TestDevice(base.BaseAPITest):
         for dv in response['devices']:
             self.assertEqual(hostname, dv['hostname'])
 
+    @decorators.idempotent_id('98e54bb5-001d-428c-81e2-8443220bd720')
     def test_list_devices_filter_by_non_exist_hostname(self):
         # list devices filter by non exist hostname
         params = {"hostname": "fake_hostname"}
         response = self.os_admin.cyborg_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
+    @decorators.idempotent_id('0ee1ff4c-b667-4706-8372-5db3d205af8d')
     def test_list_devices_filter_by_combine_args(self):
         # list devices filter by combine args
         response = self.os_admin.cyborg_client.list_devices()

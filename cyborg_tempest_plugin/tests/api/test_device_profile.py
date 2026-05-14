@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from tempest.lib import decorators
+
 from cyborg_tempest_plugin.services import cyborg_data
 from cyborg_tempest_plugin.tests.api import base
 
@@ -25,6 +27,7 @@ class TestDeviceProfileController(base.BaseAPITest):
 
     credentials = ['admin']
 
+    @decorators.idempotent_id('59bee5a9-1af3-42bd-8a51-d7b5ecb2049f')
     def test_create_device_profile(self):
         dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
         response = self.os_admin.cyborg_client.create_device_profile(dp)
@@ -32,6 +35,7 @@ class TestDeviceProfileController(base.BaseAPITest):
         self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
                         dp[0]['name'])
 
+    @decorators.idempotent_id('7e6276bc-49da-4915-a4ce-7ada60828096')
     def test_delete_multiple_device_profile(self):
         dp_one = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA1
         dp_two = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA2
@@ -47,6 +51,7 @@ class TestDeviceProfileController(base.BaseAPITest):
         self.assertNotIn(dp_one[0]['name'], device_profile_name_list)
         self.assertNotIn(dp_two[0]['name'], device_profile_name_list)
 
+    @decorators.idempotent_id('10cc0ffe-a7a8-4c16-884f-fb3a10640fc1')
     def test_get_and_delete_device_profile(self):
         dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
         create_resp = self.os_admin.cyborg_client.create_device_profile(dp)
@@ -73,6 +78,7 @@ class TestDeviceProfileController(base.BaseAPITest):
         device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
         self.assertNotIn(device_profile_uuid, device_profile_uuid_list)
 
+    @decorators.idempotent_id('292998b7-418b-491b-8876-0fb71a447b49')
     def test_delete_device_profile_by_name(self):
         dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
         response = self.os_admin.cyborg_client.create_device_profile(dp)

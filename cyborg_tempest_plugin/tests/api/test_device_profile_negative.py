@@ -31,6 +31,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
     credentials = ['admin']
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('2b4bcea3-af0f-4168-9d79-135aab333c7e')
     def test_get_non_existent_device_profile(self):
         # get the non-existent device_profile
         non_existent_id = str(uuid.uuid4())
@@ -39,6 +40,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           non_existent_id)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('6a636136-793b-4d73-a240-c5662ef48b3b')
     def test_delete_non_existent_device_profile(self):
         # delete the non-existent device_profile
         non_existent_id = str(uuid.uuid4())
@@ -48,6 +50,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             non_existent_id)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('48871ad4-579a-40cc-9e24-c5009e68feb7')
     def test_delete_multiple_non_existent_device_profile(self):
         # delete multiple non_existent device_profile
         self.assertRaises(
@@ -57,6 +60,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             'fake_device_name1', 'fake_device_name2')
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('d7a051e6-3883-444b-8c4b-d7ab2b04f831')
     def test_delete_device_profile_name_null(self):
         # delete the device_profile name is null
         name = ""
@@ -66,6 +70,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
             name)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('f83aa1a7-4b53-433b-9a60-67ae6ad3b97a')
     def test_create_device_profile_server_fault(self):
         # create device profile using an existing dp uuid
         dp = [{
@@ -90,6 +95,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           dp)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('952b1c17-7c57-45ae-8085-e7a9edca54e4')
     def test_create_device_profile_conflict(self):
         # create device profile name same
         dp = [{
@@ -113,6 +119,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           dp)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('3e337791-69a9-41f2-895c-742cccb0c629')
     def test_create_device_profile_name_is_null(self):
         # create device profile name is null
         dp = [{
@@ -131,6 +138,7 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
                           dp)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('3c3bb71a-94c3-4233-ad33-5905d52dc288')
     def test_create_device_profile_name_to_long(self):
         # create device profile name character is too long
         name_value = "".join(random.sample(

@@ -29,6 +29,7 @@ class DeployableNegativeTest(base.BaseAPITest):
     credentials = ['admin']
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('6c79a89c-bbdd-401a-b470-817c1aa8b9cf')
     def test_get_non_existent_deployable(self):
         # get the non-existent deployable
         non_existent_id = str(uuid.uuid4())

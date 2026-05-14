@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from tempest.lib import decorators
+
 from cyborg_tempest_plugin.tests.api import base
 
 
@@ -56,6 +58,7 @@ class TestAcceleratorRequestController(base.BaseAPITest):
         except Exception:
             pass
 
+    @decorators.idempotent_id('b7d01588-7561-4774-bae3-2427d6d3a002')
     def test_create_accelerator_request(self):
         dp_name = self._create_dp("test_create_arq")
         response = self.os_admin.cyborg_client.create_accelerator_request(
@@ -66,6 +69,7 @@ class TestAcceleratorRequestController(base.BaseAPITest):
             self.os_admin.cyborg_client.delete_accelerator_request,
             response['arqs'][0]['uuid'])
 
+    @decorators.idempotent_id('be5dd697-fe6c-44f5-b6f2-bc92cebb7532')
     def test_list_get_delete_accelerator_request(self):
         dp_name = self._create_dp("test_list_get_delete_arq")
         arq_uuid, _ = self._create_arq(dp_name)

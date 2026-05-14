@@ -29,6 +29,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
     credentials = ['admin']
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('a1e6dd06-c64f-49cd-ae4d-defde0b5e662')
     def test_get_non_existent_accelerator_request(self):
         # get the non-existent accelerator request
         non_existent_id = str(uuid.uuid4())
@@ -37,6 +38,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
                           non_existent_id)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('d6b6a60f-8ab3-4036-b5c0-12402469b473')
     def test_delete_non_existent_accelerator_request(self):
         # delete the non-existent accelerator request
         non_existent_id = str(uuid.uuid4())
@@ -46,6 +48,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             non_existent_id)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('343fb1b1-d546-46b4-b9b8-29d453e9c6cc')
     def test_create_accelerator_request_device_profile_name_is_null(self):
         # create the accelerator request with device profile name null
         dp_mame = {"device_profile_name": ""}
@@ -55,6 +58,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             dp_mame)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('d8dc08a5-8777-4911-a9ed-2be8fc8af60e')
     def test_create_accelerator_request_device_profile_name_non_exist(self):
         # create the accelerator request with device profile name non_exist
         dp_mame = {"device_profile_name": "fake_dp"}
@@ -64,6 +68,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
             dp_mame)
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('f48ea929-8bff-4109-bbb0-3df5c8c3cf83')
     def test_create_accelerator_request_with_special_characters(self):
         # create the accelerator request with special characters
         dp_mame = {"device_profile_name": "!@#$%^&*()=-[]"}

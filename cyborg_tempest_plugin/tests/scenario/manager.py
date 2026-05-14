@@ -22,7 +22,7 @@ from oslo_log import log
 from tempest.common import credentials_factory as common_creds
 from tempest import config
 from tempest.lib.common.utils import data_utils
-import tempest.test
+from tempest.scenario import manager
 
 
 CONF = config.CONF
@@ -30,7 +30,7 @@ CONF = config.CONF
 LOG = log.getLogger(__name__)
 
 
-class ScenarioTest(tempest.scenario.manager.ScenarioTest):
+class ScenarioTest(manager.ScenarioTest):
     """Base class for scenario tests. Uses tempest own clients. """
 
     @classmethod

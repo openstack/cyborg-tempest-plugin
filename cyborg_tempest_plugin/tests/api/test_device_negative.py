@@ -29,6 +29,7 @@ class DeviceNegativeTest(base.BaseAPITest):
     credentials = ['admin']
 
     @decorators.attr(type=['negative', 'gate'])
+    @decorators.idempotent_id('d904a4c8-5fe0-4884-814f-2f8a0aecdf01')
     def test_get_non_existent_device(self):
         # get the non-existent device
         non_existent_id = str(uuid.uuid4())

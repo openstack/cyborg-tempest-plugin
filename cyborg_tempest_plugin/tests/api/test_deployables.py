@@ -13,6 +13,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from tempest.lib import decorators
+
 from cyborg_tempest_plugin.tests.api import base
 
 
@@ -24,6 +26,7 @@ class TestDeployables(base.BaseAPITest):
 
     credentials = ['admin']
 
+    @decorators.idempotent_id('6bc3d256-2c1e-4a72-a87d-66d7ab5688b5')
     def test_list_deployables(self):
         response = self.os_admin.cyborg_client.list_deployables()
         self.assertEqual('deployables', list(response.keys())[0])
