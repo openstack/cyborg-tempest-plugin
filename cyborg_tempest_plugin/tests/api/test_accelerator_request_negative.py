@@ -24,7 +24,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(AcceleratorRequestNegativeTest, cls).skip_checks()
+        super().skip_checks()
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('a1e6dd06-c64f-49cd-ae4d-defde0b5e662')

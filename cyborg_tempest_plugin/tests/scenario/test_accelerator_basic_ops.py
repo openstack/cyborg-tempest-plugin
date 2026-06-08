@@ -39,10 +39,10 @@ class TestServerBasicOps(manager.ScenarioTest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestServerBasicOps, cls).skip_checks()
+        super().skip_checks()
 
     def setUp(self):
-        super(TestServerBasicOps, self).setUp()
+        super().setUp()
 
     @decorators.idempotent_id('7fff3fb3-91d8-4fd0-bd7d-0204f1f180ba')
     @decorators.attr(type='smoke')

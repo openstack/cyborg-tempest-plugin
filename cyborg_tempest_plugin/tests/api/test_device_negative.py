@@ -24,7 +24,7 @@ class DeviceNegativeTest(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(DeviceNegativeTest, cls).skip_checks()
+        super().skip_checks()
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('d904a4c8-5fe0-4884-814f-2f8a0aecdf01')
