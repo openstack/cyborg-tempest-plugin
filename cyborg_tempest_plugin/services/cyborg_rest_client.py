@@ -32,15 +32,6 @@ class CyborgRestClient(rest_client.RestClient):
     AR_URL = '/accelerator_requests'
     ATTR_URL = '/attributes'
 
-    service_token = None
-
-    def get_headers(self, accept_type=None, send_type=None):
-        headers = super(CyborgRestClient, self).get_headers(
-            accept_type=accept_type, send_type=send_type)
-        if self.service_token:
-            headers['X-Service-Token'] = self.service_token
-        return headers
-
     def _response_helper(self, resp, body=None):
         if body:
             body = json.loads(body)

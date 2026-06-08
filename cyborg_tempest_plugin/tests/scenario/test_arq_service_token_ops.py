@@ -20,6 +20,7 @@ from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
 
 from cyborg_tempest_plugin.services import cyborg_data
+from cyborg_tempest_plugin.services import cyborg_rest_client as clients
 from cyborg_tempest_plugin.tests.scenario import manager
 
 CONF = config.CONF
@@ -88,17 +89,25 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
             str(exc).lower())
 
         # Stop the server first so Nova releases its side, allowing
-        # Cyborg to cleanly delete the ARQs.
+        # Cyborg to cleanly delete the ARQs. create_server() already
+        # registered server deletion cleanup, so teardown still removes
+        # the server if the service-token delete below fails.
         self.servers_client.stop_server(instance_uuid)
         waiters.wait_for_server_status(
             self.servers_client, instance_uuid, 'SHUTOFF')
 
-        # Delete with a service token succeeds.
-        client.service_token = self._service_token
-        try:
-            client.delete_accelerator_request_by_instance_uuid(instance_uuid)
-        finally:
-            client.service_token = None
+        # Delete with a service token succeeds. A dedicated client
+        # instance carries the service token so the shared admin
+        # client is not mutated. The auth provider is intentionally
+        # reused so this client has the same admin identity and only
+        # differs by the injected X-Service-Token header.
+        svc_client = clients.CyborgRestClient(
+            self.os_admin.cyborg_client.auth_provider,
+            'accelerator',
+            CONF.identity.region,
+            service_token=self._service_token)
+        svc_client.delete_accelerator_request_by_instance_uuid(
+            instance_uuid)
 
         # Verify the ARQs are gone.
         arqs = client.list_accelerator_request()['arqs']
