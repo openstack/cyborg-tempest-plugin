@@ -17,9 +17,10 @@ import random
 import string
 import uuid
 
-from cyborg_tempest_plugin.tests.api import base
 from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
+
+from cyborg_tempest_plugin.tests.api import base
 
 
 class DeviceProfileNegativeTest(base.BaseAPITest):

@@ -25,6 +25,7 @@ from tempest.lib import exceptions as lib_exc
 
 from cyborg_tempest_plugin.tests.api import base
 
+
 CONF = config.CONF
 
 # Unique ARQ create payload; device_profile_name is filled in per-test.
