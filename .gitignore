@@ -4,8 +4,9 @@
 #
 # Don't add patterns to exclude files created by preferred personal tools
 # (editors, IDEs, your operating system itself even). These should instead be
-# maintained outside the repository, for example in a ~/.gitignore file added
-# with:
+# maintained outside the repository. Agentic coding tools are an explicit
+# exception because contributors commonly use their repository-local state.
+# Other personal-tool patterns can be added to a ~/.gitignore file with:
 #
 # git config --global core.excludesfile '~/.gitignore'
 
@@ -63,3 +64,14 @@ ChangeLog
 
 # Files created by releasenotes build
 releasenotes/build
+
+# Agentic coding tools and scratch files
+/.tmp/
+/.pi/
+/.cursor/
+/.cursorrules
+/.claude/
+/.vscode/
+/.codex/
+/.mcp.json
+/CLAUDE.md
