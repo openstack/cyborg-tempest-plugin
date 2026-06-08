@@ -34,16 +34,15 @@ class TestAcceleratorRequestController(base.BaseAPITest):
 
     def _create_dp(self, name):
         """Create a device profile and register cleanup."""
-        client = self.os_admin.cyborg_client
         dp = [{"name": name, "groups": _FAKE_DP_GROUPS}]
-        client.create_device_profile(dp)
-        self.addCleanup(client.delete_device_profile, name)
+        self.cyborg_admin_client.create_device_profile(dp)
+        self.addCleanup(
+            self.cyborg_admin_client.delete_device_profile, name)
         return name
 
     def _create_arq(self, dp_name):
         """Create an ARQ and register cleanup."""
-        client = self.os_admin.cyborg_client
-        response = client.create_accelerator_request(
+        response = self.cyborg_member_client.create_accelerator_request(
             {"device_profile_name": dp_name})
         arq_uuid = response['arqs'][0]['uuid']
         self.addCleanup(self._safe_delete_arq, arq_uuid)
@@ -52,20 +51,22 @@ class TestAcceleratorRequestController(base.BaseAPITest):
     def _safe_delete_arq(self, arq_uuid):
         """Delete an ARQ, ignoring errors (already deleted)."""
         try:
-            self.os_admin.cyborg_client.delete_accelerator_request(arq_uuid)
+            self.cyborg_member_client.delete_accelerator_request(
+                arq_uuid)
         except Exception:
             pass
 
     @decorators.idempotent_id('b7d01588-7561-4774-bae3-2427d6d3a002')
     def test_create_accelerator_request(self):
         dp_name = self._create_dp("test_create_arq")
-        response = self.os_admin.cyborg_client.create_accelerator_request(
+        response = self.cyborg_member_client.create_accelerator_request(
             {"device_profile_name": dp_name})
+        arq_uuid = response['arqs'][0]['uuid']
+        self.addCleanup(
+            self.cyborg_member_client.delete_accelerator_request,
+            arq_uuid)
         self.assertEqual(dp_name,
                          response['arqs'][0]['device_profile_name'])
-        self.addCleanup(
-            self.os_admin.cyborg_client.delete_accelerator_request,
-            response['arqs'][0]['uuid'])
 
     @decorators.idempotent_id('be5dd697-fe6c-44f5-b6f2-bc92cebb7532')
     def test_list_get_delete_accelerator_request(self):
@@ -73,19 +74,19 @@ class TestAcceleratorRequestController(base.BaseAPITest):
         arq_uuid, _ = self._create_arq(dp_name)
 
         # list
-        response = self.os_admin.cyborg_client.list_accelerator_request()
+        response = self.cyborg_reader_client.list_accelerator_request()
         uuid_list = [it['uuid'] for it in response['arqs']]
         self.assertIn(arq_uuid, uuid_list)
 
         # get
-        response = self.os_admin.cyborg_client.get_accelerator_request(
+        response = self.cyborg_reader_client.get_accelerator_request(
             arq_uuid)
         self.assertEqual(arq_uuid, response['uuid'])
         self.assertEqual(dp_name, response['device_profile_name'])
 
         # delete
-        self.os_admin.cyborg_client.delete_accelerator_request(arq_uuid)
-        response = self.os_admin.cyborg_client.list_accelerator_request()
+        self.cyborg_member_client.delete_accelerator_request(arq_uuid)
+        response = self.cyborg_reader_client.list_accelerator_request()
         uuid_list = [it['uuid'] for it in response['arqs']]
         self.assertNotIn(arq_uuid, uuid_list)
 

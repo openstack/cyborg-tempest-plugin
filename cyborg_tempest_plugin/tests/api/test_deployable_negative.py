@@ -31,6 +31,7 @@ class DeployableNegativeTest(base.BaseAPITest):
     def test_get_non_existent_deployable(self):
         # get the non-existent deployable
         non_existent_id = str(uuid.uuid4())
-        self.assertRaises(lib_exc.NotFound,
-                          self.os_admin.cyborg_client.get_deployable,
-                          non_existent_id)
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.cyborg_manager_client.get_deployable,
+            non_existent_id)

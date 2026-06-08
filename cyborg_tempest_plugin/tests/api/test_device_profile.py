@@ -28,8 +28,7 @@ class TestDeviceProfileController(base.BaseAPITest):
     def _safe_delete_dp(self, name):
         """Delete a device profile by name, ignoring errors."""
         try:
-            self.os_admin.cyborg_client.delete_device_profile(
-                name)
+            self.cyborg_admin_client.delete_device_profile(name)
         except Exception:
             pass
 
@@ -37,8 +36,8 @@ class TestDeviceProfileController(base.BaseAPITest):
     def test_create_device_profile(self):
         dp = cyborg_data.make_device_profile_data(
             'dp-test-create')
-        response = (
-            self.os_admin.cyborg_client.create_device_profile(dp))
+        response = self.cyborg_admin_client.create_device_profile(
+            dp)
         self.addCleanup(
             self._safe_delete_dp, dp[0]['name'])
         self.assertEqual(dp[0]['name'], response['name'])
@@ -54,17 +53,18 @@ class TestDeviceProfileController(base.BaseAPITest):
         self.addCleanup(
             self._safe_delete_dp, dp_two[0]['name'])
         dp_one_resp = (
-            self.os_admin.cyborg_client.create_device_profile(
+            self.cyborg_admin_client.create_device_profile(
                 dp_one))
         dp_two_resp = (
-            self.os_admin.cyborg_client.create_device_profile(
+            self.cyborg_admin_client.create_device_profile(
                 dp_two))
         self.assertEqual(dp_one[0]['name'], dp_one_resp['name'])
         self.assertEqual(dp_two[0]['name'], dp_two_resp['name'])
-        client = self.os_admin.cyborg_client
-        client.delete_multiple_device_profile_by_names(
-            dp_one[0]['name'], dp_two[0]['name'])
-        list_resp = client.list_device_profile()
+        self.cyborg_admin_client \
+            .delete_multiple_device_profile_by_names(
+                dp_one[0]['name'], dp_two[0]['name'])
+        list_resp = (
+            self.cyborg_reader_client.list_device_profile())
         device_profile_list = list_resp['device_profiles']
         device_profile_name_list = [
             it['name'] for it in device_profile_list]
@@ -81,22 +81,22 @@ class TestDeviceProfileController(base.BaseAPITest):
         self.addCleanup(
             self._safe_delete_dp, dp[0]['name'])
         create_resp = (
-            self.os_admin.cyborg_client.create_device_profile(dp))
+            self.cyborg_admin_client.create_device_profile(dp))
         device_profile_uuid = create_resp['uuid']
         self.assertEqual(dp[0]['name'], create_resp['name'])
         self.assertEqual(dp[0]['groups'], create_resp['groups'])
         self.assertEqual(
             dp[0]['description'], create_resp['description'])
 
-        client = self.os_admin.cyborg_client
-        list_resp = client.list_device_profile()
+        list_resp = (
+            self.cyborg_reader_client.list_device_profile())
         device_profile_list = list_resp['device_profiles']
         device_profile_uuid_list = [
             it['uuid'] for it in device_profile_list]
         self.assertIn(
             device_profile_uuid, device_profile_uuid_list)
 
-        get_resp = client.get_device_profile(
+        get_resp = self.cyborg_reader_client.get_device_profile(
             device_profile_uuid)
         self.assertEqual(
             dp[0]['name'],
@@ -105,9 +105,10 @@ class TestDeviceProfileController(base.BaseAPITest):
             device_profile_uuid,
             get_resp['device_profile']['uuid'])
 
-        client.delete_device_profile_by_uuid(
+        self.cyborg_admin_client.delete_device_profile_by_uuid(
             device_profile_uuid)
-        list_resp = client.list_device_profile()
+        list_resp = (
+            self.cyborg_reader_client.list_device_profile())
         device_profile_list = list_resp['device_profiles']
         device_profile_uuid_list = [
             it['uuid'] for it in device_profile_list]
@@ -120,12 +121,13 @@ class TestDeviceProfileController(base.BaseAPITest):
             'dp-test-del-name')
         self.addCleanup(
             self._safe_delete_dp, dp[0]['name'])
-        response = (
-            self.os_admin.cyborg_client.create_device_profile(dp))
+        response = self.cyborg_admin_client.create_device_profile(
+            dp)
         self.assertEqual(dp[0]['name'], response['name'])
-        client = self.os_admin.cyborg_client
-        client.delete_device_profile(dp[0]['name'])
-        list_resp = client.list_device_profile()
+        self.cyborg_admin_client.delete_device_profile(
+            dp[0]['name'])
+        list_resp = (
+            self.cyborg_reader_client.list_device_profile())
         device_profile_list = list_resp['device_profiles']
         device_profile_name_list = [
             it['name'] for it in device_profile_list]

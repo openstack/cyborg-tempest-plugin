@@ -31,9 +31,10 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
     def test_get_non_existent_accelerator_request(self):
         # get the non-existent accelerator request
         non_existent_id = str(uuid.uuid4())
-        self.assertRaises(lib_exc.NotFound,
-                          self.os_admin.cyborg_client.get_accelerator_request,
-                          non_existent_id)
+        self.assertRaises(
+            lib_exc.NotFound,
+            self.cyborg_reader_client.get_accelerator_request,
+            non_existent_id)
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('d6b6a60f-8ab3-4036-b5c0-12402469b473')
@@ -42,7 +43,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         non_existent_id = str(uuid.uuid4())
         self.assertRaises(
             lib_exc.NotFound,
-            self.os_admin.cyborg_client.delete_accelerator_request,
+            self.cyborg_member_client.delete_accelerator_request,
             non_existent_id)
 
     @decorators.attr(type=['negative', 'gate'])
@@ -52,7 +53,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         dp_mame = {"device_profile_name": ""}
         self.assertRaises(
             lib_exc.NotFound,
-            self.os_admin.cyborg_client.create_accelerator_request,
+            self.cyborg_member_client.create_accelerator_request,
             dp_mame)
 
     @decorators.attr(type=['negative', 'gate'])
@@ -62,7 +63,7 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         dp_mame = {"device_profile_name": "fake_dp"}
         self.assertRaises(
             lib_exc.NotFound,
-            self.os_admin.cyborg_client.create_accelerator_request,
+            self.cyborg_member_client.create_accelerator_request,
             dp_mame)
 
     @decorators.attr(type=['negative', 'gate'])
@@ -72,5 +73,5 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         dp_mame = {"device_profile_name": "!@#$%^&*()=-[]"}
         self.assertRaises(
             lib_exc.NotFound,
-            self.os_admin.cyborg_client.create_accelerator_request,
+            self.cyborg_member_client.create_accelerator_request,
             dp_mame)

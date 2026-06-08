@@ -26,11 +26,11 @@ class TestDeployables(base.BaseAPITest):
 
     @decorators.idempotent_id('6bc3d256-2c1e-4a72-a87d-66d7ab5688b5')
     def test_list_deployables(self):
-        response = self.os_admin.cyborg_client.list_deployables()
+        response = self.cyborg_manager_client.list_deployables()
         self.assertEqual('deployables', list(response.keys())[0])
 
         deployables_uuid = response['deployables'][0]['uuid']
-        response = self.os_admin.cyborg_client.get_deployables(
+        response = self.cyborg_manager_client.get_deployables(
             deployables_uuid)
         self.assertEqual(deployables_uuid, response['uuid'])
 

@@ -26,22 +26,21 @@ class TestDevice(base.BaseAPITest):
 
     @decorators.idempotent_id('6f4bf672-1b8e-4e3e-8562-de64093bad52')
     def test_list_get_device(self):
-        response = self.os_admin.cyborg_client.list_devices()
+        response = self.cyborg_manager_client.list_devices()
         self.assertEqual('devices', list(response.keys())[0])
 
         device_uuid = response['devices'][0]['uuid']
-        response = self.os_admin.cyborg_client.get_device(
-            device_uuid)
+        response = self.cyborg_manager_client.get_device(device_uuid)
         self.assertEqual(device_uuid, response['uuid'])
 
     @decorators.idempotent_id('61096874-0b10-4b12-954f-f03eb0e59f5d')
     def test_list_devices_filter_by_type(self):
-        response = self.os_admin.cyborg_client.list_devices()
+        response = self.cyborg_manager_client.list_devices()
         type_name = response['devices'][0]['type']
 
         # list devices filter by type
         params = {"type": type_name}
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertNotEmpty(response['devices'])
         for dv in response['devices']:
             self.assertEqual(type_name, dv['type'])
@@ -50,17 +49,17 @@ class TestDevice(base.BaseAPITest):
     def test_list_devices_filter_by_non_exist_type(self):
         # list devices filter by non exist type
         params = {"type": "fake_type"}
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
     @decorators.idempotent_id('f501b343-a7e4-41a7-8e02-ab6725714bbf')
     def test_list_devices_filter_by_vendor(self):
-        response = self.os_admin.cyborg_client.list_devices()
+        response = self.cyborg_manager_client.list_devices()
         vendor = response['devices'][0]['vendor']
 
         # list devices filter by vendor
         params = {"vendor": vendor}
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertNotEmpty(response['devices'])
         for dv in response['devices']:
             self.assertEqual(vendor, dv['vendor'])
@@ -69,17 +68,17 @@ class TestDevice(base.BaseAPITest):
     def test_list_devices_filter_by_non_exist_vendor(self):
         # list devices filter by non exist vendor
         params = {"vendor": "fake_vendor"}
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
     @decorators.idempotent_id('ae34fb47-6079-4cc4-817d-5954a149d0d8')
     def test_list_devices_filter_by_hostname(self):
-        response = self.os_admin.cyborg_client.list_devices()
+        response = self.cyborg_manager_client.list_devices()
         hostname = response['devices'][0]['hostname']
 
         # list devices filter by hostname
         params = {"hostname": hostname}
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertNotEmpty(response['devices'])
         for dv in response['devices']:
             self.assertEqual(hostname, dv['hostname'])
@@ -88,13 +87,13 @@ class TestDevice(base.BaseAPITest):
     def test_list_devices_filter_by_non_exist_hostname(self):
         # list devices filter by non exist hostname
         params = {"hostname": "fake_hostname"}
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertEmpty(response['devices'])
 
     @decorators.idempotent_id('0ee1ff4c-b667-4706-8372-5db3d205af8d')
     def test_list_devices_filter_by_combine_args(self):
         # list devices filter by combine args
-        response = self.os_admin.cyborg_client.list_devices()
+        response = self.cyborg_manager_client.list_devices()
         type_name = response['devices'][0]['type']
         vendor = response['devices'][0]['vendor']
         hostname = response['devices'][0]['hostname']
@@ -103,7 +102,7 @@ class TestDevice(base.BaseAPITest):
             "hostname": hostname,
             "vendor": vendor
         }
-        response = self.os_admin.cyborg_client.list_devices(params=params)
+        response = self.cyborg_manager_client.list_devices(params=params)
         self.assertNotEmpty(response['devices'])
         for dv in response['devices']:
             self.assertEqual(type_name, dv['type'])
