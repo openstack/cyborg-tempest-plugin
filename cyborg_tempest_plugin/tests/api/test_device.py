@@ -24,8 +24,6 @@ class TestDevice(base.BaseAPITest):
     def skip_checks(cls):
         super(TestDevice, cls).skip_checks()
 
-    credentials = ['admin']
-
     @decorators.idempotent_id('6f4bf672-1b8e-4e3e-8562-de64093bad52')
     def test_list_get_device(self):
         response = self.os_admin.cyborg_client.list_devices()

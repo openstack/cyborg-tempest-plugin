@@ -26,8 +26,6 @@ class DeployableNegativeTest(base.BaseAPITest):
     def skip_checks(cls):
         super(DeployableNegativeTest, cls).skip_checks()
 
-    credentials = ['admin']
-
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('6c79a89c-bbdd-401a-b470-817c1aa8b9cf')
     def test_get_non_existent_deployable(self):

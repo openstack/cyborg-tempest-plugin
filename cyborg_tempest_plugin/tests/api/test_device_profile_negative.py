@@ -28,8 +28,6 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
     def skip_checks(cls):
         super(DeviceProfileNegativeTest, cls).skip_checks()
 
-    credentials = ['admin']
-
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('2b4bcea3-af0f-4168-9d79-135aab333c7e')
     def test_get_non_existent_device_profile(self):

@@ -42,3 +42,19 @@ CyborgPCIGroup = [
                default="",
                help="Expected PCI product ID visible in the guest."),
 ]
+
+cyborg_policy_group = cfg.OptGroup(
+    name="cyborg_policy",
+    title="Cyborg Policy Options"
+)
+
+CyborgPolicyGroup = [
+    cfg.BoolOpt(
+        "enforce_new_defaults",
+        default=False,
+        help="Whether the Cyborg API uses oslo.policy's new defaults. "
+             "Scope is always enforced for policies that declare scope_types; "
+             "this option only selects new defaults without deprecated-rule "
+             "fallbacks.",
+    ),
+]

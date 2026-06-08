@@ -25,8 +25,6 @@ class TestDeviceProfileController(base.BaseAPITest):
     def skip_checks(cls):
         super(TestDeviceProfileController, cls).skip_checks()
 
-    credentials = ['admin']
-
     def _safe_delete_dp(self, name):
         """Delete a device profile by name, ignoring errors."""
         try:

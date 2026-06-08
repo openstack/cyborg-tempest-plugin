@@ -24,8 +24,6 @@ class TestDeployables(base.BaseAPITest):
     def skip_checks(cls):
         super(TestDeployables, cls).skip_checks()
 
-    credentials = ['admin']
-
     @decorators.idempotent_id('6bc3d256-2c1e-4a72-a87d-66d7ab5688b5')
     def test_list_deployables(self):
         response = self.os_admin.cyborg_client.list_deployables()

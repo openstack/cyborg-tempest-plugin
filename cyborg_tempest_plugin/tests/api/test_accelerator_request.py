@@ -32,8 +32,6 @@ class TestAcceleratorRequestController(base.BaseAPITest):
     def skip_checks(cls):
         super(TestAcceleratorRequestController, cls).skip_checks()
 
-    credentials = ['admin']
-
     def _create_dp(self, name):
         """Create a device profile and register cleanup."""
         client = self.os_admin.cyborg_client

@@ -26,8 +26,6 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
     def skip_checks(cls):
         super(AcceleratorRequestNegativeTest, cls).skip_checks()
 
-    credentials = ['admin']
-
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('a1e6dd06-c64f-49cd-ae4d-defde0b5e662')
     def test_get_non_existent_accelerator_request(self):
