@@ -16,39 +16,36 @@
 import copy
 
 
-NORMAL_DEVICE_PROFILE_DATA1 = [{
-    "name": "fpga-num-1-dp1",
-    "groups": [
-        {
-            "resources:FPGA": "1",
-            "trait:CUSTOM_FAKE_DEVICE": "required"
-        }],
-    "description": "fpga-num-1-dp1-desc"
-    }]
+NORMAL_DEVICE_PROFILE_DATA1 = [
+    {
+        "name": "fpga-num-1-dp1",
+        "groups": [
+            {"resources:FPGA": "1", "trait:CUSTOM_FAKE_DEVICE": "required"}
+        ],
+        "description": "fpga-num-1-dp1-desc",
+    }
+]
 
-SCENARIO_DEVICE_PROFILE_DATA = [{
-    "name": "fpga-num-1-scenario",
-    "groups": [
-        {
-            "resources:FPGA": "1",
-            "trait:CUSTOM_FAKE_DEVICE": "required"
-        }]
-    }]
+SCENARIO_DEVICE_PROFILE_DATA = [
+    {
+        "name": "fpga-num-1-scenario",
+        "groups": [
+            {"resources:FPGA": "1", "trait:CUSTOM_FAKE_DEVICE": "required"}
+        ],
+    }
+]
 
-SERVICE_TOKEN_DEVICE_PROFILE_DATA = [{
-    "name": "fpga-svc-token-test",
-    "groups": [
-        {
-            "resources:FPGA": "1",
-            "trait:CUSTOM_FAKE_DEVICE": "required"
-        }]
-    }]
+SERVICE_TOKEN_DEVICE_PROFILE_DATA = [
+    {
+        "name": "fpga-svc-token-test",
+        "groups": [
+            {"resources:FPGA": "1", "trait:CUSTOM_FAKE_DEVICE": "required"}
+        ],
+    }
+]
 
 _FAKE_DEVICE_GROUPS = [
-    {
-        'resources:FPGA': '1',
-        'trait:CUSTOM_FAKE_DEVICE': 'required',
-    }
+    {'resources:FPGA': '1', 'trait:CUSTOM_FAKE_DEVICE': 'required'}
 ]
 
 

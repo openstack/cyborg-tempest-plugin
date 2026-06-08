@@ -65,9 +65,7 @@ class BaseAPITest(test.BaseTestCase):
     def _make_cyborg_client(cls, os_manager):
         """Return a CyborgRestClient using the given manager's auth."""
         return client.CyborgRestClient(
-            os_manager.auth_provider,
-            'accelerator',
-            CONF.identity.region,
+            os_manager.auth_provider, 'accelerator', CONF.identity.region
         )
 
     @classmethod
@@ -75,19 +73,19 @@ class BaseAPITest(test.BaseTestCase):
         super().setup_clients()
 
         cls.cyborg_admin_client = cls._make_cyborg_client(cls.os_admin)
-        cls.cyborg_service_client = (
-            cls._make_cyborg_client(cls.os_service_user))
+        cls.cyborg_service_client = cls._make_cyborg_client(
+            cls.os_service_user
+        )
         cls.os_admin.cyborg_client = cls.cyborg_admin_client
 
         # Build persona-specific clients for tests that intentionally
         # assert cross-persona policy behavior.
         project_admin_client = cls._make_cyborg_client(cls.os_project_admin)
-        project_manager_client = (
-            cls._make_cyborg_client(cls.os_project_manager))
-        project_member_client = (
-            cls._make_cyborg_client(cls.os_project_member))
-        project_reader_client = (
-            cls._make_cyborg_client(cls.os_project_reader))
+        project_manager_client = cls._make_cyborg_client(
+            cls.os_project_manager
+        )
+        project_member_client = cls._make_cyborg_client(cls.os_project_member)
+        project_reader_client = cls._make_cyborg_client(cls.os_project_reader)
         cls.os_project_admin.cyborg_client = project_admin_client
         cls.os_project_manager.cyborg_client = project_manager_client
         cls.os_project_member.cyborg_client = project_member_client

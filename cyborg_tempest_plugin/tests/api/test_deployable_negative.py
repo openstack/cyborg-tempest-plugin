@@ -21,7 +21,6 @@ from tempest.lib import exceptions as lib_exc
 
 
 class DeployableNegativeTest(base.BaseAPITest):
-
     @classmethod
     def skip_checks(cls):
         super().skip_checks()
@@ -34,4 +33,5 @@ class DeployableNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_manager_client.get_deployable,
-            non_existent_id)
+            non_existent_id,
+        )

@@ -21,7 +21,6 @@ from tempest.lib import exceptions as lib_exc
 
 
 class DeviceNegativeTest(base.BaseAPITest):
-
     @classmethod
     def skip_checks(cls):
         super().skip_checks()
@@ -34,4 +33,5 @@ class DeviceNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_manager_client.get_device,
-            non_existent_id)
+            non_existent_id,
+        )

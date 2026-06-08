@@ -19,7 +19,6 @@ from cyborg_tempest_plugin.tests.api import base
 
 
 class TestDeployables(base.BaseAPITest):
-
     @classmethod
     def skip_checks(cls):
         super().skip_checks()
@@ -30,8 +29,7 @@ class TestDeployables(base.BaseAPITest):
         self.assertEqual('deployables', list(response.keys())[0])
 
         deployables_uuid = response['deployables'][0]['uuid']
-        response = self.cyborg_manager_client.get_deployables(
-            deployables_uuid)
+        response = self.cyborg_manager_client.get_deployables(deployables_uuid)
         self.assertEqual(deployables_uuid, response['uuid'])
 
     @classmethod

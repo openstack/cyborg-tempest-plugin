@@ -25,7 +25,6 @@ CONF = config.CONF
 
 
 class TestServerBasicOps(manager.ScenarioTest):
-
     """The test suite for accelerator basic operations
 
     This smoke test case follows this basic set of operations:
@@ -53,14 +52,17 @@ class TestServerBasicOps(manager.ScenarioTest):
         security_group = self.create_security_group()
         # flavor = self.create_flavor()
         response = self.create_device_profile(
-            cyborg_data.SCENARIO_DEVICE_PROFILE_DATA)
+            cyborg_data.SCENARIO_DEVICE_PROFILE_DATA
+        )
         device_profile_name = response["name"]
         accl_flavor = self.create_accel_flavor(device_profile_name)
         self.instance = self.create_server(
             key_name=keypair['name'],
             security_groups=[{'name': security_group['name']}],
             name="cyborg-tempest-test-server",
-            flavor=accl_flavor)
+            flavor=accl_flavor,
+        )
         self.servers_client.delete_server(self.instance['id'])
         waiters.wait_for_server_termination(
-            self.servers_client, self.instance['id'], ignore_error=False)
+            self.servers_client, self.instance['id'], ignore_error=False
+        )

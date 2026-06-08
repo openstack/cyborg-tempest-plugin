@@ -21,7 +21,6 @@ from tempest.lib import exceptions as lib_exc
 
 
 class AcceleratorRequestNegativeTest(base.BaseAPITest):
-
     @classmethod
     def skip_checks(cls):
         super().skip_checks()
@@ -34,7 +33,8 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_reader_client.get_accelerator_request,
-            non_existent_id)
+            non_existent_id,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('d6b6a60f-8ab3-4036-b5c0-12402469b473')
@@ -44,7 +44,8 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_member_client.delete_accelerator_request,
-            non_existent_id)
+            non_existent_id,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('343fb1b1-d546-46b4-b9b8-29d453e9c6cc')
@@ -54,7 +55,8 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_member_client.create_accelerator_request,
-            dp_mame)
+            dp_mame,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('d8dc08a5-8777-4911-a9ed-2be8fc8af60e')
@@ -64,7 +66,8 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_member_client.create_accelerator_request,
-            dp_mame)
+            dp_mame,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('f48ea929-8bff-4109-bbb0-3df5c8c3cf83')
@@ -74,4 +77,5 @@ class AcceleratorRequestNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_member_client.create_accelerator_request,
-            dp_mame)
+            dp_mame,
+        )

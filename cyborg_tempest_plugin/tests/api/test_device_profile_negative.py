@@ -23,7 +23,6 @@ from tempest.lib import exceptions as lib_exc
 
 
 class DeviceProfileNegativeTest(base.BaseAPITest):
-
     @classmethod
     def skip_checks(cls):
         super().skip_checks()
@@ -36,7 +35,8 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_reader_client.get_device_profile,
-            non_existent_id)
+            non_existent_id,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('6a636136-793b-4d73-a240-c5662ef48b3b')
@@ -46,7 +46,8 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_admin_client.delete_device_profile_by_uuid,
-            non_existent_id)
+            non_existent_id,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('48871ad4-579a-40cc-9e24-c5009e68feb7')
@@ -54,9 +55,10 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         # delete multiple non_existent device_profile
         self.assertRaises(
             lib_exc.NotFound,
-            self.cyborg_admin_client
-            .delete_multiple_device_profile_by_names,
-            'fake_device_name1', 'fake_device_name2')
+            self.cyborg_admin_client.delete_multiple_device_profile_by_names,
+            'fake_device_name1',
+            'fake_device_name2',
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('d7a051e6-3883-444b-8c4b-d7ab2b04f831')
@@ -66,26 +68,30 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.BadRequest,
             self.cyborg_admin_client.delete_device_profile,
-            name)
+            name,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('f83aa1a7-4b53-433b-9a60-67ae6ad3b97a')
     def test_create_device_profile_server_fault(self):
         # create device profile using an existing dp uuid
-        dp = [{
-            "name": "fpga_uuid_test",
-            "groups": [
-                {
-                    "resources:FPGA": "1",
-                    "trait:CUSTOM_FAKE_DEVICE": "required"
-                }]
-        }]
+        dp = [
+            {
+                "name": "fpga_uuid_test",
+                "groups": [
+                    {
+                        "resources:FPGA": "1",
+                        "trait:CUSTOM_FAKE_DEVICE": "required",
+                    }
+                ],
+            }
+        ]
         # create a device profile with named "fpga_uuid_test"
         response = self.cyborg_admin_client.create_device_profile(dp)
         self.assertEqual(dp[0]['name'], response['name'])
         self.addCleanup(
-            self.cyborg_admin_client.delete_device_profile,
-            dp[0]['name'])
+            self.cyborg_admin_client.delete_device_profile, dp[0]['name']
+        )
         dp[0]['name'] = 'new-fpga'
         dp[0]['uuid'] = response['uuid']
 
@@ -93,72 +99,86 @@ class DeviceProfileNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.ServerFault,
             self.cyborg_admin_client.create_device_profile,
-            dp)
+            dp,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('952b1c17-7c57-45ae-8085-e7a9edca54e4')
     def test_create_device_profile_conflict(self):
         # create device profile name same
-        dp = [{
-            "name": "fpga_same_test",
-            "groups": [
-                {
-                    "resources:FPGA": "1",
-                    "trait:CUSTOM_FAKE_DEVICE": "required"
-                }],
-            "description": "null"
-        }]
+        dp = [
+            {
+                "name": "fpga_same_test",
+                "groups": [
+                    {
+                        "resources:FPGA": "1",
+                        "trait:CUSTOM_FAKE_DEVICE": "required",
+                    }
+                ],
+                "description": "null",
+            }
+        ]
         # create a device profile with named "fpga_same_test"
         response = self.cyborg_admin_client.create_device_profile(dp)
         self.assertEqual(dp[0]['name'], response['name'])
         self.addCleanup(
-            self.cyborg_admin_client.delete_device_profile,
-            dp[0]['name'])
+            self.cyborg_admin_client.delete_device_profile, dp[0]['name']
+        )
 
         # create a same device profile with the same name "fpga_same_test"
         self.assertRaises(
             lib_exc.Conflict,
             self.cyborg_admin_client.create_device_profile,
-            dp)
+            dp,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('3e337791-69a9-41f2-895c-742cccb0c629')
     def test_create_device_profile_name_is_null(self):
         # create device profile name is null
-        dp = [{
-            "name": "",
-            "groups": [
-                {
-                    "resources:FPGA": "1",
-                    "trait:CUSTOM_FAKE_DEVICE": "required"
-                }],
-            "description": "null"
-        }]
+        dp = [
+            {
+                "name": "",
+                "groups": [
+                    {
+                        "resources:FPGA": "1",
+                        "trait:CUSTOM_FAKE_DEVICE": "required",
+                    }
+                ],
+                "description": "null",
+            }
+        ]
 
         # create device profile with name null
         self.assertRaises(
             lib_exc.ServerFault,
             self.cyborg_admin_client.create_device_profile,
-            dp)
+            dp,
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('3c3bb71a-94c3-4233-ad33-5905d52dc288')
     def test_create_device_profile_name_to_long(self):
         # create device profile name character is too long
-        name_value = "".join(random.sample(
-            string.ascii_letters * 10 + string.digits * 10, 256))
-        dp = [{
-            "name": name_value,
-            "groups": [
-                {
-                    "resources:FPGA": "1",
-                    "trait:CUSTOM_FAKE_DEVICE": "required"
-                }],
-            "description": "null"
-        }]
+        name_value = "".join(
+            random.sample(string.ascii_letters * 10 + string.digits * 10, 256)
+        )
+        dp = [
+            {
+                "name": name_value,
+                "groups": [
+                    {
+                        "resources:FPGA": "1",
+                        "trait:CUSTOM_FAKE_DEVICE": "required",
+                    }
+                ],
+                "description": "null",
+            }
+        ]
 
         # create device profile with character is too long
         self.assertRaises(
             lib_exc.ServerFault,
             self.cyborg_admin_client.create_device_profile,
-            dp)
+            dp,
+        )

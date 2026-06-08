@@ -23,8 +23,9 @@ from cyborg_tempest_plugin import config as project_config
 
 class CyborgTempestPlugin(plugins.TempestPlugin):
     def load_tests(self):
-        base_path = os.path.split(os.path.dirname(
-            os.path.abspath(__file__)))[0]
+        base_path = os.path.split(os.path.dirname(os.path.abspath(__file__)))[
+            0
+        ]
         test_dir = "cyborg_tempest_plugin/tests"
         full_test_dir = os.path.join(base_path, test_dir)
         return full_test_dir, base_path
@@ -33,19 +34,21 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
         config.register_opt_group(
             conf,
             project_config.service_available_group,
-            project_config.ServiceAvailableGroup)
+            project_config.ServiceAvailableGroup,
+        )
         config.register_opt_group(
-            conf,
-            project_config.cyborg_group,
-            project_config.CyborgGroup)
+            conf, project_config.cyborg_group, project_config.CyborgGroup
+        )
         config.register_opt_group(
             conf,
             project_config.cyborg_pci_group,
-            project_config.CyborgPCIGroup)
+            project_config.CyborgPCIGroup,
+        )
         config.register_opt_group(
             conf,
             project_config.cyborg_policy_group,
-            project_config.CyborgPolicyGroup)
+            project_config.CyborgPolicyGroup,
+        )
 
     def get_opt_lists(self):
         return [
@@ -53,10 +56,7 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
                 project_config.service_available_group.name,
                 project_config.ServiceAvailableGroup,
             ),
-            (
-                project_config.cyborg_group.name,
-                project_config.CyborgGroup,
-            ),
+            (project_config.cyborg_group.name, project_config.CyborgGroup),
             (
                 project_config.cyborg_pci_group.name,
                 project_config.CyborgPCIGroup,

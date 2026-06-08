@@ -63,3 +63,8 @@ ignore = [
 
 [tool.ruff.lint.mccabe]
 max-complexity = 20
+
+[tool.ruff.format]
+quote-style = "preserve"
+docstring-code-format = true
+skip-magic-trailing-comma = true

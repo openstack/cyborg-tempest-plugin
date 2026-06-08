@@ -16,7 +16,6 @@ from cyborg_tempest_plugin.tests.api import base
 
 
 class TestAttributes(base.BaseAPITest):
-
     @decorators.idempotent_id('1bf7d6a8-24bd-4906-b3a3-1a212b7b6d5c')
     def test_list_attributes(self):
         response = self.cyborg_manager_client.list_attributes()

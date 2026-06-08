@@ -19,7 +19,6 @@ from cyborg_tempest_plugin.tests.api import base
 
 
 class TestDevice(base.BaseAPITest):
-
     @classmethod
     def skip_checks(cls):
         super().skip_checks()
@@ -97,11 +96,7 @@ class TestDevice(base.BaseAPITest):
         type_name = response['devices'][0]['type']
         vendor = response['devices'][0]['vendor']
         hostname = response['devices'][0]['hostname']
-        params = {
-            "type": type_name,
-            "hostname": hostname,
-            "vendor": vendor
-        }
+        params = {"type": type_name, "hostname": hostname, "vendor": vendor}
         response = self.cyborg_manager_client.list_devices(params=params)
         self.assertNotEmpty(response['devices'])
         for dv in response['devices']:
