@@ -13,6 +13,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import copy
+
+
 NORMAL_DEVICE_PROFILE_DATA1 = [{
     "name": "fpga-num-1-dp1",
     "groups": [
@@ -41,22 +44,22 @@ SERVICE_TOKEN_DEVICE_PROFILE_DATA = [{
         }]
     }]
 
-BATCH_DELETE_DEVICE_PROFILE_DATA1 = [{
-    "name": "afaas_example_1",
-    "groups": [
-        {
-            "resources:FPGA": "1",
-            "trait:CUSTOM_FPGA_1": "required",
-            "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-        }]
-    }]
+_FAKE_DEVICE_GROUPS = [
+    {
+        'resources:FPGA': '1',
+        'trait:CUSTOM_FAKE_DEVICE': 'required',
+    }
+]
 
-BATCH_DELETE_DEVICE_PROFILE_DATA2 = [{
-    "name": "afaas_example_2",
-    "groups": [
-        {
-            "resources:FPGA": "1",
-            "trait:CUSTOM_FPGA_1": "required",
-            "trait:CUSTOM_FUNCTION_ID_3AFB": "required",
-        }]
-    }]
+
+def make_device_profile_data(name, description=None):
+    """Return a single-item DP list with a unique name.
+
+    Use this in API tests instead of the module-level constants
+    so that each test creates a DP with a name that cannot
+    collide with any other test running concurrently.
+    """
+    dp = {'name': name, 'groups': copy.deepcopy(_FAKE_DEVICE_GROUPS)}
+    if description is not None:
+        dp['description'] = description
+    return [dp]

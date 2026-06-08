@@ -27,67 +27,112 @@ class TestDeviceProfileController(base.BaseAPITest):
 
     credentials = ['admin']
 
+    def _safe_delete_dp(self, name):
+        """Delete a device profile by name, ignoring errors."""
+        try:
+            self.os_admin.cyborg_client.delete_device_profile(
+                name)
+        except Exception:
+            pass
+
     @decorators.idempotent_id('59bee5a9-1af3-42bd-8a51-d7b5ecb2049f')
     def test_create_device_profile(self):
-        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
-        response = self.os_admin.cyborg_client.create_device_profile(dp)
+        dp = cyborg_data.make_device_profile_data(
+            'dp-test-create')
+        response = (
+            self.os_admin.cyborg_client.create_device_profile(dp))
+        self.addCleanup(
+            self._safe_delete_dp, dp[0]['name'])
         self.assertEqual(dp[0]['name'], response['name'])
-        self.addCleanup(self.os_admin.cyborg_client.delete_device_profile,
-                        dp[0]['name'])
 
     @decorators.idempotent_id('7e6276bc-49da-4915-a4ce-7ada60828096')
     def test_delete_multiple_device_profile(self):
-        dp_one = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA1
-        dp_two = cyborg_data.BATCH_DELETE_DEVICE_PROFILE_DATA2
-        dp_one_resp = self.os_admin.cyborg_client.create_device_profile(dp_one)
-        dp_two_resp = self.os_admin.cyborg_client.create_device_profile(dp_two)
+        dp_one = cyborg_data.make_device_profile_data(
+            'dp-batch-del-1')
+        dp_two = cyborg_data.make_device_profile_data(
+            'dp-batch-del-2')
+        self.addCleanup(
+            self._safe_delete_dp, dp_one[0]['name'])
+        self.addCleanup(
+            self._safe_delete_dp, dp_two[0]['name'])
+        dp_one_resp = (
+            self.os_admin.cyborg_client.create_device_profile(
+                dp_one))
+        dp_two_resp = (
+            self.os_admin.cyborg_client.create_device_profile(
+                dp_two))
         self.assertEqual(dp_one[0]['name'], dp_one_resp['name'])
         self.assertEqual(dp_two[0]['name'], dp_two_resp['name'])
-        self.os_admin.cyborg_client.delete_multiple_device_profile_by_names(
+        client = self.os_admin.cyborg_client
+        client.delete_multiple_device_profile_by_names(
             dp_one[0]['name'], dp_two[0]['name'])
-        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        list_resp = client.list_device_profile()
         device_profile_list = list_resp['device_profiles']
-        device_profile_name_list = [it['name'] for it in device_profile_list]
-        self.assertNotIn(dp_one[0]['name'], device_profile_name_list)
-        self.assertNotIn(dp_two[0]['name'], device_profile_name_list)
+        device_profile_name_list = [
+            it['name'] for it in device_profile_list]
+        self.assertNotIn(
+            dp_one[0]['name'], device_profile_name_list)
+        self.assertNotIn(
+            dp_two[0]['name'], device_profile_name_list)
 
     @decorators.idempotent_id('10cc0ffe-a7a8-4c16-884f-fb3a10640fc1')
     def test_get_and_delete_device_profile(self):
-        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
-        create_resp = self.os_admin.cyborg_client.create_device_profile(dp)
+        dp = cyborg_data.make_device_profile_data(
+            'dp-test-get-del',
+            description='dp-test-get-del-desc')
+        self.addCleanup(
+            self._safe_delete_dp, dp[0]['name'])
+        create_resp = (
+            self.os_admin.cyborg_client.create_device_profile(dp))
         device_profile_uuid = create_resp['uuid']
         self.assertEqual(dp[0]['name'], create_resp['name'])
         self.assertEqual(dp[0]['groups'], create_resp['groups'])
-        self.assertEqual(dp[0]['description'], create_resp['description'])
+        self.assertEqual(
+            dp[0]['description'], create_resp['description'])
 
-        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        client = self.os_admin.cyborg_client
+        list_resp = client.list_device_profile()
         device_profile_list = list_resp['device_profiles']
-        device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
-        self.assertIn(device_profile_uuid, device_profile_uuid_list)
+        device_profile_uuid_list = [
+            it['uuid'] for it in device_profile_list]
+        self.assertIn(
+            device_profile_uuid, device_profile_uuid_list)
 
-        get_resp = self.os_admin.cyborg_client.get_device_profile(
+        get_resp = client.get_device_profile(
             device_profile_uuid)
-        self.assertEqual(dp[0]['name'], get_resp['device_profile']['name'])
-        self.assertEqual(device_profile_uuid,
-                         get_resp['device_profile']['uuid'])
+        self.assertEqual(
+            dp[0]['name'],
+            get_resp['device_profile']['name'])
+        self.assertEqual(
+            device_profile_uuid,
+            get_resp['device_profile']['uuid'])
 
-        self.os_admin.cyborg_client.delete_device_profile_by_uuid(
+        client.delete_device_profile_by_uuid(
             device_profile_uuid)
-        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        list_resp = client.list_device_profile()
         device_profile_list = list_resp['device_profiles']
-        device_profile_uuid_list = [it['uuid'] for it in device_profile_list]
-        self.assertNotIn(device_profile_uuid, device_profile_uuid_list)
+        device_profile_uuid_list = [
+            it['uuid'] for it in device_profile_list]
+        self.assertNotIn(
+            device_profile_uuid, device_profile_uuid_list)
 
     @decorators.idempotent_id('292998b7-418b-491b-8876-0fb71a447b49')
     def test_delete_device_profile_by_name(self):
-        dp = cyborg_data.NORMAL_DEVICE_PROFILE_DATA1
-        response = self.os_admin.cyborg_client.create_device_profile(dp)
+        dp = cyborg_data.make_device_profile_data(
+            'dp-test-del-name')
+        self.addCleanup(
+            self._safe_delete_dp, dp[0]['name'])
+        response = (
+            self.os_admin.cyborg_client.create_device_profile(dp))
         self.assertEqual(dp[0]['name'], response['name'])
-        self.os_admin.cyborg_client.delete_device_profile(dp[0]['name'])
-        list_resp = self.os_admin.cyborg_client.list_device_profile()
+        client = self.os_admin.cyborg_client
+        client.delete_device_profile(dp[0]['name'])
+        list_resp = client.list_device_profile()
         device_profile_list = list_resp['device_profiles']
-        device_profile_name_list = [it['name'] for it in device_profile_list]
-        self.assertNotIn(dp[0]['name'], device_profile_name_list)
+        device_profile_name_list = [
+            it['name'] for it in device_profile_list]
+        self.assertNotIn(
+            dp[0]['name'], device_profile_name_list)
 
     @classmethod
     def resource_cleanup(cls):
