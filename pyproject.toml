@@ -1,0 +1,39 @@
+[build-system]
+requires = ["pbr>=6.0.0", "setuptools>=64.0.0"]
+build-backend = "pbr.build"
+
+[project]
+name = "cyborg-tempest-plugin"
+description = "OpenStack Acceleration Tempest Plugin"
+readme = {file = "README.rst", content-type = "text/x-rst"}
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11"
+authors = [
+    {name = "OpenStack", email = "openstack-discuss@lists.openstack.org"},
+]
+classifiers = [
+    "Environment :: OpenStack",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+"Bug Tracker" = "https://bugs.launchpad.net/cyborg/"
+"Documentation" = "https://docs.openstack.org/cyborg/latest/"
+"Source Code" = "https://opendev.org/openstack/cyborg-tempest-plugin"
+
+[project.entry-points."tempest.test_plugins"]
+cyborg_tempest_plugin = "cyborg_tempest_plugin.plugin:CyborgTempestPlugin"
+
+[tool.setuptools.packages.find]
+include = ["cyborg_tempest_plugin*"]
