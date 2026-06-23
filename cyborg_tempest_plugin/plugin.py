@@ -34,8 +34,15 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
             conf,
             project_config.service_available_group,
             project_config.ServiceAvailableGroup)
+        config.register_opt_group(
+            conf,
+            project_config.cyborg_pci_group,
+            project_config.CyborgPCIGroup)
 
     def get_opt_lists(self):
-        return [(
-            project_config.service_available_group.name,
-            project_config.ServiceAvailableGroup)]
+        return [
+            (project_config.service_available_group.name,
+             project_config.ServiceAvailableGroup),
+            (project_config.cyborg_pci_group.name,
+             project_config.CyborgPCIGroup),
+        ]

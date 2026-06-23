@@ -22,6 +22,7 @@ from oslo_log import log
 from tempest.common import credentials_factory as common_creds
 from tempest import config
 from tempest.lib.common.utils import data_utils
+from tempest.lib.common.utils import test_utils
 from tempest.scenario import manager
 
 
@@ -91,10 +92,10 @@ class ScenarioTest(manager.ScenarioTest):
         self.addCleanup(client.delete_device_profile, device_profile)
         return body
 
-    def create_accel_flavor(self, dp_name, client=None):
+    def create_accel_flavor(self, dp_name, client=None, flavor_ref=None):
         if not client:
             client = self.admin_flavors_client
-        flavor_id = CONF.compute.flavor_ref
+        flavor_id = flavor_ref or CONF.compute.flavor_ref
         flavor_base = self.admin_flavors_client.show_flavor(
             flavor_id)['flavor']
         name = data_utils.rand_name(self.__class__.__name__)
@@ -103,6 +104,8 @@ class ScenarioTest(manager.ScenarioTest):
         disk = flavor_base['disk']
         body = client.create_flavor(name=name, ram=ram, vcpus=vcpus, disk=disk)
         flavor = body["flavor"]
+        self.addCleanup(test_utils.call_and_ignore_notfound_exc,
+                        client.delete_flavor, flavor["id"])
         specs = {"accel:device_profile": dp_name}
         self.update_flavor_extra_specs(specs, flavor)
         return flavor["id"]

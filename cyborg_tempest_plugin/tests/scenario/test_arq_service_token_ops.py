@@ -59,10 +59,6 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
             cyborg_data.SERVICE_TOKEN_DEVICE_PROFILE_DATA)
         device_profile_name = response["name"]
         accl_flavor = self.create_accel_flavor(device_profile_name)
-        # TODO(sean-k-mooney): create_accel_flavor should register its
-        # own addCleanup like create_flavor does; fix in the helper.
-        self.addCleanup(
-            self.admin_flavors_client.delete_flavor, accl_flavor)
 
         server = self.create_server(
             key_name=keypair['name'],

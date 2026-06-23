@@ -25,3 +25,20 @@ ServiceAvailableGroup = [
     cfg.BoolOpt("cyborg", default=True,
                 help="Whether or not cyborg is expected to be available")
 ]
+
+cyborg_pci_group = cfg.OptGroup(
+    name="cyborg_pci",
+    title="Cyborg PCI Driver Tempest Plugin Options"
+)
+
+CyborgPCIGroup = [
+    cfg.StrOpt("device_profile_name",
+               default="",
+               help="Device profile name used by Cyborg PCI scenario tests."),
+    cfg.StrOpt("vendor_id",
+               default="",
+               help="Expected PCI vendor ID visible in the guest."),
+    cfg.StrOpt("product_id",
+               default="",
+               help="Expected PCI product ID visible in the guest."),
+]

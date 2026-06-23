@@ -31,6 +31,17 @@ class CyborgRestClient(rest_client.RestClient):
     DP_URL = '/device_profiles'
     AR_URL = '/accelerator_requests'
     ATTR_URL = '/attributes'
+    api_microversion_header_name = 'OpenStack-API-Version'
+
+    def get_headers(self, accept_type=None, send_type=None,
+                    microversion=None):
+        # Service type prefix required for the unified microversion header
+        headers = super().get_headers(
+            accept_type=accept_type, send_type=send_type)
+        if microversion:
+            headers[self.api_microversion_header_name] = (
+                'accelerator %s' % microversion)
+        return headers
 
     def _response_helper(self, resp, body=None):
         if body:
@@ -93,13 +104,19 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.post(self.AR_URL, body=body)
         return self._response_helper(resp, body)
 
-    def list_accelerator_request(self):
-        resp, body = self.get(self.AR_URL)
+    def list_accelerator_request(self, params=None, microversion=None):
+        url = self.AR_URL
+        if params is not None:
+            url += '?%s' % parse.urlencode(params)
+        headers = self.get_headers(microversion=microversion)
+        resp, body = self.get(url, headers=headers, extra_headers=True)
         return self._response_helper(resp, body)
 
-    def get_accelerator_request(self, accelerator_request_uuid):
+    def get_accelerator_request(self, accelerator_request_uuid,
+                                microversion=None):
         url = self.AR_URL + "/" + accelerator_request_uuid
-        resp, body = self.get(url)
+        headers = self.get_headers(microversion=microversion)
+        resp, body = self.get(url, headers=headers, extra_headers=True)
         return self._response_helper(resp, body)
 
     def delete_accelerator_request(self, accelerator_request_uuid):
