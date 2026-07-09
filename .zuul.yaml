@@ -5,19 +5,21 @@
       - tempest-plugin-jobs
     check:
       jobs:
-        - cyborg-tempest
+        - cyborg-tempest-py3
         - cyborg-tempest-2026-1
         - cyborg-tempest-2025-2
         - cyborg-tempest-2025-1
-        - cyborg-tempest-ipv6-only
+        - cyborg-tempest-ipv6
     gate:
       jobs:
-        - cyborg-tempest
+        - cyborg-tempest-py3
         - cyborg-tempest-2026-1
         - cyborg-tempest-2025-2
         - cyborg-tempest-2025-1
-        - cyborg-tempest-ipv6-only
+        - cyborg-tempest-ipv6
 
+# NOTE(jgilaber): keep this job until 2026.1 is eol to avoid breaking the
+# stable jobs and backporting the change in job definitions
 - job:
     name: cyborg-tempest
     description: |
@@ -57,6 +59,8 @@
       - ^.git.*$
       - ^tox.ini$
 
+# NOTE(jgilaber): keep this job until 2026.1 is eol to avoid breaking the
+# stable jobs and backporting the change in job definitions
 - job:
     name: cyborg-tempest-ipv6-only
     parent: devstack-tempest-ipv6
