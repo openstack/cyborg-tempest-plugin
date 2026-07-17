@@ -93,18 +93,17 @@ class TestPCIDriverLifecycle(manager.ScenarioTest):
         product_id = self._normalize_pci_id(CONF.cyborg_pci.product_id)
         expected = '%s:%s' % (vendor_id, product_id)
         cmd = """
-found_sysfs=0
-for dev in /sys/bus/pci/devices/*; do
-    if [ -r "$dev/vendor" ] && [ -r "$dev/device" ]; then
-        found_sysfs=1
-        printf '%s %s:%s\n' \
-            "$(basename "$dev")" \
-            "$(cat "$dev/vendor")" \
-            "$(cat "$dev/device")"
-    fi
-done
-if [ "$found_sysfs" -eq 0 ] && command -v lspci >/dev/null 2>&1; then
+if command -v lspci >/dev/null 2>&1; then
     lspci -n
+else
+    for dev in /sys/bus/pci/devices/*; do
+        if [ -r "$dev/vendor" ] && [ -r "$dev/device" ]; then
+            printf '%s %s:%s\n' \
+                "$(basename "$dev")" \
+                "$(cat "$dev/vendor")" \
+                "$(cat "$dev/device")"
+        fi
+    done
 fi
 """
         output = ssh_client.exec_command(cmd)
