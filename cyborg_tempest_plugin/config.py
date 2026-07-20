@@ -26,6 +26,23 @@ ServiceAvailableGroup = [
                 help="Whether or not cyborg is expected to be available")
 ]
 
+cyborg_group = cfg.OptGroup(
+    name="cyborg",
+    title="Cyborg Tempest Plugin Options"
+)
+
+CyborgGroup = [
+    cfg.StrOpt("image_ref",
+               default="",
+               help="Optional image ID for Cyborg scenario tests. "
+                    "Defaults to compute.image_ref when unset."),
+    cfg.StrOpt("flavor_ref",
+               default="",
+               help="Optional base flavor ID for Cyborg scenario "
+                    "tests. Defaults to compute.flavor_ref when "
+                    "unset."),
+]
+
 cyborg_pci_group = cfg.OptGroup(
     name="cyborg_pci",
     title="Cyborg PCI Driver Tempest Plugin Options"
@@ -41,6 +58,10 @@ CyborgPCIGroup = [
     cfg.StrOpt("product_id",
                default="",
                help="Expected PCI product ID visible in the guest."),
+    cfg.BoolOpt("expected_managed",
+                default=None,
+                help="Expected value of attach_handle_info.managed for "
+                     "PCI ARQs. Leave unset to skip assertion."),
 ]
 
 cyborg_policy_group = cfg.OptGroup(

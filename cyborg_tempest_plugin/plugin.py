@@ -36,6 +36,10 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
             project_config.ServiceAvailableGroup)
         config.register_opt_group(
             conf,
+            project_config.cyborg_group,
+            project_config.CyborgGroup)
+        config.register_opt_group(
+            conf,
             project_config.cyborg_pci_group,
             project_config.CyborgPCIGroup)
         config.register_opt_group(
@@ -48,6 +52,10 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
             (
                 project_config.service_available_group.name,
                 project_config.ServiceAvailableGroup,
+            ),
+            (
+                project_config.cyborg_group.name,
+                project_config.CyborgGroup,
             ),
             (
                 project_config.cyborg_pci_group.name,
