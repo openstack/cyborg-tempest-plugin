@@ -42,6 +42,11 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
         )
         config.register_opt_group(
             conf,
+            project_config.cyborg_fpga_group,
+            project_config.CyborgFPGAGroup,
+        )
+        config.register_opt_group(
+            conf,
             project_config.cyborg_pci_group,
             project_config.CyborgPCIGroup,
         )
@@ -58,6 +63,10 @@ class CyborgTempestPlugin(plugins.TempestPlugin):
                 project_config.ServiceAvailableGroup,
             ),
             (project_config.cyborg_group.name, project_config.CyborgGroup),
+            (
+                project_config.cyborg_fpga_group.name,
+                project_config.CyborgFPGAGroup,
+            ),
             (
                 project_config.cyborg_pci_group.name,
                 project_config.CyborgPCIGroup,
