@@ -151,6 +151,7 @@ fi
         arq = self._wait_for_bound_pci_arq(server['id'])
         self._assert_pci_arq(arq, server['id'])
         ssh_client = self._get_ssh_client(server, keypair)
+        waiters.wait_for_ssh(ssh_client)
         self._assert_guest_has_pci_device(ssh_client)
         return ssh_client
 
@@ -193,6 +194,13 @@ fi
             ssh_client.exec_command('sudo reboot')
         except lib_exc.SSHExecCommandFailed:
             pass
+        try:
+            waiters.wait_for_ssh(ssh_client)
+        except lib_exc.TimeoutException:
+            self.fail(
+                f"Server {server['id']} did not start rebooting after guest "
+                "reboot command"
+                )
         self._assert_server_pci_ready(server, keypair)
 
     @decorators.idempotent_id('2da4cd2d-1a58-4347-8f51-98b65e3b853a')
