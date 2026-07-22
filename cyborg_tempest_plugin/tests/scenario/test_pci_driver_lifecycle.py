@@ -13,6 +13,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import socket
+
+from oslo_log import log as logging
 from tempest.common import compute
 from tempest.common import utils
 from tempest.common import waiters
@@ -25,6 +28,7 @@ from tempest.lib import exceptions as lib_exc
 from cyborg_tempest_plugin.tests.scenario import manager
 
 CONF = config.CONF
+LOG = logging.getLogger(__name__)
 
 
 class TestPCIDriverLifecycle(manager.ScenarioTest):
@@ -155,6 +159,25 @@ fi
         self._assert_guest_has_pci_device(ssh_client)
         return ssh_client
 
+    def _wait_for_guest_unreachable(self, ip, port=22):
+        """Ensure guest is not reachable after a reboot."""
+        def _check():
+            try:
+                with socket.create_connection((ip, port), timeout=5):
+                    LOG.debug(f"Connection to {ip}: {port} successful")
+            except OSError:
+                LOG.debug(f"Connection to {ip}: {port} failed")
+                return True
+            return False
+
+        if not test_utils.call_until_true(
+                _check,
+                CONF.compute.build_timeout,
+                CONF.compute.build_interval):
+            raise lib_exc.TimeoutException(
+                'SSH port still reachable after reboot command'
+            )
+
     def _reboot_server(self, server, reboot_type):
         self.servers_client.reboot_server(server['id'], type=reboot_type)
         waiters.wait_for_server_status(
@@ -194,6 +217,7 @@ fi
             ssh_client.exec_command('sudo reboot')
         except lib_exc.SSHExecCommandFailed:
             pass
+        self._wait_for_guest_unreachable(self.get_server_ip(server))
         try:
             waiters.wait_for_ssh(ssh_client)
         except lib_exc.TimeoutException:
