@@ -22,7 +22,7 @@ class TestDeployables(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestDeployables, cls).skip_checks()
+        super().skip_checks()
 
     @decorators.idempotent_id('6bc3d256-2c1e-4a72-a87d-66d7ab5688b5')
     def test_list_deployables(self):
@@ -36,4 +36,4 @@ class TestDeployables(base.BaseAPITest):
 
     @classmethod
     def resource_cleanup(cls):
-        super(TestDeployables, cls).resource_cleanup()
+        super().resource_cleanup()

@@ -39,11 +39,11 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestARQServiceTokenOps, cls).skip_checks()
+        super().skip_checks()
 
     @classmethod
     def setup_clients(cls):
-        super(TestARQServiceTokenOps, cls).setup_clients()
+        super().setup_clients()
         cls._service_token = (
             cls.os_service_user.auth_provider.get_token())
 

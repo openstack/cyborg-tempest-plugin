@@ -36,13 +36,13 @@ class ScenarioTest(manager.ScenarioTest):
 
     @classmethod
     def skip_checks(cls):
-        super(ScenarioTest, cls).skip_checks()
+        super().skip_checks()
         if not CONF.service_available.cyborg:
             raise cls.skipException('Cyborg support is required')
 
     @classmethod
     def setup_clients(cls):
-        super(ScenarioTest, cls).setup_clients()
+        super().setup_clients()
 
         cls.admin_flavors_client = cls.os_admin.flavors_client
 

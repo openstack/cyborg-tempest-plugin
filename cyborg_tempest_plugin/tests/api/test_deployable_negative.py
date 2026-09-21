@@ -24,7 +24,7 @@ class DeployableNegativeTest(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(DeployableNegativeTest, cls).skip_checks()
+        super().skip_checks()
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('6c79a89c-bbdd-401a-b470-817c1aa8b9cf')

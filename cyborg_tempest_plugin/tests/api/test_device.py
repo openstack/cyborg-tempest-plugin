@@ -22,7 +22,7 @@ class TestDevice(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestDevice, cls).skip_checks()
+        super().skip_checks()
 
     @decorators.idempotent_id('6f4bf672-1b8e-4e3e-8562-de64093bad52')
     def test_list_get_device(self):
@@ -111,4 +111,4 @@ class TestDevice(base.BaseAPITest):
 
     @classmethod
     def resource_cleanup(cls):
-        super(TestDevice, cls).resource_cleanup()
+        super().resource_cleanup()

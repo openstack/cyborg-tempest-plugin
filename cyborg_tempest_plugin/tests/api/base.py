@@ -57,7 +57,7 @@ class BaseAPITest(test.BaseTestCase):
 
     @classmethod
     def skip_checks(cls):
-        super(BaseAPITest, cls).skip_checks()
+        super().skip_checks()
         if not CONF.service_available.cyborg:
             raise cls.skipException('Cyborg support is required')
 
@@ -72,7 +72,7 @@ class BaseAPITest(test.BaseTestCase):
 
     @classmethod
     def setup_clients(cls):
-        super(BaseAPITest, cls).setup_clients()
+        super().setup_clients()
 
         cls.cyborg_admin_client = cls._make_cyborg_client(cls.os_admin)
         cls.cyborg_service_client = (
@@ -108,12 +108,12 @@ class BaseAPITest(test.BaseTestCase):
 
     @classmethod
     def setup_credentials(cls):
-        super(BaseAPITest, cls).setup_credentials()
+        super().setup_credentials()
 
     @classmethod
     def resource_setup(cls):
-        super(BaseAPITest, cls).resource_setup()
+        super().resource_setup()
 
     @classmethod
     def resource_cleanup(cls):
-        super(BaseAPITest, cls).resource_cleanup()
+        super().resource_cleanup()

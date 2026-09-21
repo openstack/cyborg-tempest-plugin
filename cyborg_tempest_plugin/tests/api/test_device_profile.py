@@ -23,7 +23,7 @@ class TestDeviceProfileController(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestDeviceProfileController, cls).skip_checks()
+        super().skip_checks()
 
     def _safe_delete_dp(self, name):
         """Delete a device profile by name, ignoring errors."""
@@ -136,4 +136,4 @@ class TestDeviceProfileController(base.BaseAPITest):
 
     @classmethod
     def resource_cleanup(cls):
-        super(TestDeviceProfileController, cls).resource_cleanup()
+        super().resource_cleanup()

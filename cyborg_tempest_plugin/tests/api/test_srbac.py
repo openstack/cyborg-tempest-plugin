@@ -55,7 +55,7 @@ class TestSRBACServiceRole(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestSRBACServiceRole, cls).skip_checks()
+        super().skip_checks()
         if not CONF.cyborg_policy.enforce_new_defaults:
             raise cls.skipException(
                 'SRBAC tests require '
@@ -63,7 +63,7 @@ class TestSRBACServiceRole(base.BaseAPITest):
 
     @classmethod
     def resource_setup(cls):
-        super(TestSRBACServiceRole, cls).resource_setup()
+        super().resource_setup()
         dp_name = _SRBAC_DP_DATA[0]['name']
         dp_resp = cls.cyborg_admin_client.create_device_profile(
             _SRBAC_DP_DATA)
@@ -95,7 +95,7 @@ class TestSRBACAdminImpliedRoles(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestSRBACAdminImpliedRoles, cls).skip_checks()
+        super().skip_checks()
         if not CONF.cyborg_policy.enforce_new_defaults:
             raise cls.skipException(
                 'SRBAC tests require '
@@ -103,7 +103,7 @@ class TestSRBACAdminImpliedRoles(base.BaseAPITest):
 
     @classmethod
     def resource_setup(cls):
-        super(TestSRBACAdminImpliedRoles, cls).resource_setup()
+        super().resource_setup()
         dp_name = 'srbac-implied-dp'
         dp_data = [{
             'name': dp_name,
@@ -173,7 +173,7 @@ class TestSRBACScopeEnforcement(base.BaseAPITest):
 
     @classmethod
     def skip_checks(cls):
-        super(TestSRBACScopeEnforcement, cls).skip_checks()
+        super().skip_checks()
         if not CONF.cyborg_policy.enforce_new_defaults:
             raise cls.skipException(
                 'SRBAC tests require '
@@ -181,7 +181,7 @@ class TestSRBACScopeEnforcement(base.BaseAPITest):
 
     @classmethod
     def setup_clients(cls):
-        super(TestSRBACScopeEnforcement, cls).setup_clients()
+        super().setup_clients()
         cls.cyborg_system_admin_client = cls._make_cyborg_client(
             cls.os_system_admin)
 
