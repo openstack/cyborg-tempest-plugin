@@ -1,0 +1,26 @@
+---
+default_language_version:
+  python: python3
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: mixed-line-ending
+        args: ['--fix', 'lf']
+        exclude: '.*\.(svg)$'
+      - id: fix-byte-order-marker
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-yaml
+        files: .*\.(yaml|yml)$
+      - id: check-json
+        files: .*\.json$
+      - id: check-ast
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-merge-conflict
+        exclude: '.*\.(rst|inc)$'
+      - id: debug-statements
+      - id: check-docstring-first
