@@ -37,3 +37,11 @@ cyborg_tempest_plugin = "cyborg_tempest_plugin.plugin:CyborgTempestPlugin"
 
 [tool.setuptools.packages.find]
 include = ["cyborg_tempest_plugin*"]
+
+[tool.ruff]
+line-length = 79
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+external = ["H"]
