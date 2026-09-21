@@ -32,7 +32,7 @@ LOG = log.getLogger(__name__)
 
 
 class ScenarioTest(manager.ScenarioTest):
-    """Base class for scenario tests. Uses tempest own clients. """
+    """Base class for scenario tests. Uses tempest own clients."""
 
     @classmethod
     def skip_checks(cls):
@@ -47,12 +47,12 @@ class ScenarioTest(manager.ScenarioTest):
         cls.admin_flavors_client = cls.os_admin.flavors_client
 
         credentials = common_creds.get_configured_admin_credentials(
-            'identity_admin')
+            'identity_admin'
+        )
         auth_prov = get_auth_provider(credentials)
-        cls.os_admin.cyborg_client = (
-            clients.CyborgRestClient(auth_prov,
-                                     'accelerator',
-                                     CONF.identity.region))
+        cls.os_admin.cyborg_client = clients.CyborgRestClient(
+            auth_prov, 'accelerator', CONF.identity.region
+        )
 
     # ## Test functions library
     #
@@ -61,11 +61,13 @@ class ScenarioTest(manager.ScenarioTest):
 
     def update_flavor_extra_specs(self, specs, flavor):
         set_body = self.admin_flavors_client.set_flavor_extra_spec(
-            flavor['id'], **specs)['extra_specs']
+            flavor['id'], **specs
+        )['extra_specs']
         self.assertEqual(set_body, specs)
         # GET extra specs and verify
-        get_body = (self.admin_flavors_client.list_flavor_extra_specs(
-            flavor['id'])['extra_specs'])
+        get_body = self.admin_flavors_client.list_flavor_extra_specs(
+            flavor['id']
+        )['extra_specs']
         self.assertEqual(get_body, specs)
         return flavor
 
@@ -73,8 +75,9 @@ class ScenarioTest(manager.ScenarioTest):
         if not client:
             client = self.admin_flavors_client
         flavor_id = CONF.compute.flavor_ref
-        flavor_base = self.admin_flavors_client.show_flavor(
-            flavor_id)['flavor']
+        flavor_base = self.admin_flavors_client.show_flavor(flavor_id)[
+            'flavor'
+        ]
         name = data_utils.rand_name(self.__class__.__name__)
         ram = flavor_base['ram']
         vcpus = flavor_base['vcpus']
@@ -96,16 +99,20 @@ class ScenarioTest(manager.ScenarioTest):
         if not client:
             client = self.admin_flavors_client
         flavor_id = flavor_ref or CONF.compute.flavor_ref
-        flavor_base = self.admin_flavors_client.show_flavor(
-            flavor_id)['flavor']
+        flavor_base = self.admin_flavors_client.show_flavor(flavor_id)[
+            'flavor'
+        ]
         name = data_utils.rand_name(self.__class__.__name__)
         ram = flavor_base['ram']
         vcpus = flavor_base['vcpus']
         disk = flavor_base['disk']
         body = client.create_flavor(name=name, ram=ram, vcpus=vcpus, disk=disk)
         flavor = body["flavor"]
-        self.addCleanup(test_utils.call_and_ignore_notfound_exc,
-                        client.delete_flavor, flavor["id"])
+        self.addCleanup(
+            test_utils.call_and_ignore_notfound_exc,
+            client.delete_flavor,
+            flavor["id"],
+        )
         specs = {"accel:device_profile": dp_name}
         self.update_flavor_extra_specs(specs, flavor)
         return flavor["id"]

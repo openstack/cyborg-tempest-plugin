@@ -28,19 +28,21 @@ LOG = logging.getLogger(__name__)
 
 class CyborgRestClient(rest_client.RestClient):
     """Client class for accessing the cyborg API."""
+
     DP_URL = '/device_profiles'
     AR_URL = '/accelerator_requests'
     ATTR_URL = '/attributes'
     api_microversion_header_name = 'OpenStack-API-Version'
 
-    def get_headers(self, accept_type=None, send_type=None,
-                    microversion=None):
+    def get_headers(self, accept_type=None, send_type=None, microversion=None):
         # Service type prefix required for the unified microversion header
         headers = super().get_headers(
-            accept_type=accept_type, send_type=send_type)
+            accept_type=accept_type, send_type=send_type
+        )
         if microversion:
             headers[self.api_microversion_header_name] = (
-                'accelerator %s' % microversion)
+                'accelerator %s' % microversion
+            )
         return headers
 
     def _response_helper(self, resp, body=None):
@@ -112,8 +114,9 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.get(url, headers=headers, extra_headers=True)
         return self._response_helper(resp, body)
 
-    def get_accelerator_request(self, accelerator_request_uuid,
-                                microversion=None):
+    def get_accelerator_request(
+        self, accelerator_request_uuid, microversion=None
+    ):
         url = self.AR_URL + "/" + accelerator_request_uuid
         headers = self.get_headers(microversion=microversion)
         resp, body = self.get(url, headers=headers, extra_headers=True)
@@ -129,16 +132,23 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.delete(url)
         return self._response_helper(resp, body)
 
-    def bind_accelerator_request(self, arq_uuid, hostname,
-                                 device_rp_uuid, instance_uuid):
+    def bind_accelerator_request(
+        self, arq_uuid, hostname, device_rp_uuid, instance_uuid
+    ):
         """Bind an ARQ to an instance via PATCH."""
         body = {
             arq_uuid: [
                 {"path": "/hostname", "op": "add", "value": hostname},
-                {"path": "/device_rp_uuid", "op": "add",
-                 "value": device_rp_uuid},
-                {"path": "/instance_uuid", "op": "add",
-                 "value": instance_uuid},
+                {
+                    "path": "/device_rp_uuid",
+                    "op": "add",
+                    "value": device_rp_uuid,
+                },
+                {
+                    "path": "/instance_uuid",
+                    "op": "add",
+                    "value": instance_uuid,
+                },
             ]
         }
         body = json.dump_as_bytes(body)
@@ -161,21 +171,24 @@ class CyborgRestClient(rest_client.RestClient):
 
 def get_auth_provider(credentials, scope='project'):
     default_params = {
-        'disable_ssl_certificate_validation':
-            CONF.identity.disable_ssl_certificate_validation,
+        'disable_ssl_certificate_validation': CONF.identity.disable_ssl_certificate_validation,
         'ca_certs': CONF.identity.ca_certificates_file,
-        'trace_requests': CONF.debug.trace_requests
+        'trace_requests': CONF.debug.trace_requests,
     }
 
     if isinstance(credentials, auth.KeystoneV3Credentials):
-        auth_provider_class, auth_url = \
-            auth.KeystoneV3AuthProvider, CONF.identity.uri_v3
+        auth_provider_class, auth_url = (
+            auth.KeystoneV3AuthProvider,
+            CONF.identity.uri_v3,
+        )
     else:
-        auth_provider_class, auth_url = \
-            auth.KeystoneV2AuthProvider, CONF.identity.uri
+        auth_provider_class, auth_url = (
+            auth.KeystoneV2AuthProvider,
+            CONF.identity.uri,
+        )
 
-    _auth_provider = auth_provider_class(credentials, auth_url,
-                                         scope=scope,
-                                         **default_params)
+    _auth_provider = auth_provider_class(
+        credentials, auth_url, scope=scope, **default_params
+    )
     _auth_provider.set_auth()
     return _auth_provider

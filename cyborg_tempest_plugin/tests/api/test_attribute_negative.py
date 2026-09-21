@@ -19,7 +19,6 @@ from cyborg_tempest_plugin.tests.api import base
 
 
 class AttributeNegativeTest(base.BaseAPITest):
-
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('6e96d2b4-b948-46b3-9562-817fcbddfa7f')
     def test_get_non_existent_attribute(self):
@@ -27,4 +26,5 @@ class AttributeNegativeTest(base.BaseAPITest):
         self.assertRaises(
             lib_exc.NotFound,
             self.cyborg_manager_client.get_attributes,
-            non_existent_id)
+            non_existent_id,
+        )

@@ -28,19 +28,9 @@ from cyborg_tempest_plugin.tests.api import base
 CONF = config.CONF
 
 # Unique ARQ create payload; device_profile_name is filled in per-test.
-_ARQ_GROUPS = [
-    {
-        'resources:FPGA': '1',
-        'trait:CUSTOM_FAKE_DEVICE': 'required',
-    }
-]
+_ARQ_GROUPS = [{'resources:FPGA': '1', 'trait:CUSTOM_FAKE_DEVICE': 'required'}]
 
-_SRBAC_DP_DATA = [
-    {
-        'name': 'srbac-test-dp',
-        'groups': _ARQ_GROUPS,
-    }
-]
+_SRBAC_DP_DATA = [{'name': 'srbac-test-dp', 'groups': _ARQ_GROUPS}]
 
 
 def _arq_body(dp_name):
@@ -58,18 +48,16 @@ class TestSRBACServiceRole(base.BaseAPITest):
         super().skip_checks()
         if not CONF.cyborg_policy.enforce_new_defaults:
             raise cls.skipException(
-                'SRBAC tests require '
-                'cyborg_policy.enforce_new_defaults = True')
+                'SRBAC tests require cyborg_policy.enforce_new_defaults = True'
+            )
 
     @classmethod
     def resource_setup(cls):
         super().resource_setup()
         dp_name = _SRBAC_DP_DATA[0]['name']
-        dp_resp = cls.cyborg_admin_client.create_device_profile(
-            _SRBAC_DP_DATA)
+        dp_resp = cls.cyborg_admin_client.create_device_profile(_SRBAC_DP_DATA)
         cls.addClassResourceCleanup(
-            cls.cyborg_admin_client.delete_device_profile,
-            dp_name,
+            cls.cyborg_admin_client.delete_device_profile, dp_name
         )
         cls._dp_name = dp_resp['name']
 
@@ -80,8 +68,7 @@ class TestSRBACServiceRole(base.BaseAPITest):
         resp = self.cyborg_service_client.create_accelerator_request(body)
         arq_uuid = resp['arqs'][0]['uuid']
         self.addCleanup(
-            self.cyborg_service_client.delete_accelerator_request,
-            arq_uuid,
+            self.cyborg_service_client.delete_accelerator_request, arq_uuid
         )
 
 
@@ -98,22 +85,17 @@ class TestSRBACAdminImpliedRoles(base.BaseAPITest):
         super().skip_checks()
         if not CONF.cyborg_policy.enforce_new_defaults:
             raise cls.skipException(
-                'SRBAC tests require '
-                'cyborg_policy.enforce_new_defaults = True')
+                'SRBAC tests require cyborg_policy.enforce_new_defaults = True'
+            )
 
     @classmethod
     def resource_setup(cls):
         super().resource_setup()
         dp_name = 'srbac-implied-dp'
-        dp_data = [{
-            'name': dp_name,
-            'groups': _ARQ_GROUPS,
-        }]
-        dp_resp = cls.cyborg_admin_client.create_device_profile(
-            dp_data)
+        dp_data = [{'name': dp_name, 'groups': _ARQ_GROUPS}]
+        dp_resp = cls.cyborg_admin_client.create_device_profile(dp_data)
         cls.addClassResourceCleanup(
-            cls.cyborg_admin_client.delete_device_profile,
-            dp_name,
+            cls.cyborg_admin_client.delete_device_profile, dp_name
         )
         cls._dp_name = dp_resp['name']
 
@@ -130,7 +112,8 @@ class TestSRBACAdminImpliedRoles(base.BaseAPITest):
         resp = self.cyborg_admin_client.create_accelerator_request(body)
         arq_uuid = resp['arqs'][0]['uuid']
         self.addCleanup(
-            self.cyborg_admin_client.delete_accelerator_request, arq_uuid)
+            self.cyborg_admin_client.delete_accelerator_request, arq_uuid
+        )
 
     @decorators.idempotent_id('3ab9e8c0-3493-4f34-af77-dcce42298bb0')
     def test_admin_can_read_devices(self):
@@ -153,16 +136,13 @@ class TestSRBACAdminImpliedRoles(base.BaseAPITest):
     @decorators.idempotent_id('b2c3d4e5-f6a7-8901-bcde-f12345678901')
     def test_reader_can_list_device_profiles(self):
         """Reader satisfies project_reader_or_admin on device profiles."""
-        resp = (
-            self.os_project_reader.cyborg_client.list_device_profile())
+        resp = self.os_project_reader.cyborg_client.list_device_profile()
         self.assertIn('device_profiles', resp)
 
     @decorators.idempotent_id('c3d4e5f6-a7b8-9012-cdef-123456789012')
     def test_reader_can_list_arqs(self):
         """Reader satisfies project_reader_or_admin on ARQ list."""
-        resp = (
-            self.os_project_reader.cyborg_client
-            .list_accelerator_request())
+        resp = self.os_project_reader.cyborg_client.list_accelerator_request()
         self.assertIn('arqs', resp)
 
 
@@ -176,20 +156,20 @@ class TestSRBACScopeEnforcement(base.BaseAPITest):
         super().skip_checks()
         if not CONF.cyborg_policy.enforce_new_defaults:
             raise cls.skipException(
-                'SRBAC tests require '
-                'cyborg_policy.enforce_new_defaults = True')
+                'SRBAC tests require cyborg_policy.enforce_new_defaults = True'
+            )
 
     @classmethod
     def setup_clients(cls):
         super().setup_clients()
         cls.cyborg_system_admin_client = cls._make_cyborg_client(
-            cls.os_system_admin)
+            cls.os_system_admin
+        )
 
     @decorators.attr(type=['negative', 'gate'])
     @decorators.idempotent_id('66f071ce-dd76-4594-be98-a5a48d58d578')
     def test_system_admin_cannot_list_devices(self):
         """Scope enforcement rejects a system token on a project API."""
         self.assertRaises(
-            lib_exc.Forbidden,
-            self.cyborg_system_admin_client.list_devices,
+            lib_exc.Forbidden, self.cyborg_system_admin_client.list_devices
         )

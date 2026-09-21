@@ -44,8 +44,7 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
     @classmethod
     def setup_clients(cls):
         super().setup_clients()
-        cls._service_token = (
-            cls.os_service_user.auth_provider.get_token())
+        cls._service_token = cls.os_service_user.auth_provider.get_token()
 
     @decorators.idempotent_id('a4c1e7b2-3d5f-4a8e-9b0c-1d2e3f4a5b6c')
     @decorators.attr(type='smoke')
@@ -56,7 +55,8 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
         security_group = self.create_security_group()
 
         response = self.create_device_profile(
-            cyborg_data.SERVICE_TOKEN_DEVICE_PROFILE_DATA)
+            cyborg_data.SERVICE_TOKEN_DEVICE_PROFILE_DATA
+        )
         device_profile_name = response["name"]
         accl_flavor = self.create_accel_flavor(device_profile_name)
 
@@ -64,7 +64,8 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
             key_name=keypair['name'],
             security_groups=[{'name': security_group['name']}],
             name="cyborg-svc-token-test",
-            flavor=accl_flavor)
+            flavor=accl_flavor,
+        )
         instance_uuid = server['id']
 
         # Verify a bound ARQ exists for this instance.
@@ -73,16 +74,16 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
         bound = [a for a in arqs if a['instance_uuid'] == instance_uuid]
         self.assertTrue(
             len(bound) > 0,
-            "Expected at least one bound ARQ for instance %s" % instance_uuid)
+            "Expected at least one bound ARQ for instance %s" % instance_uuid,
+        )
 
         # Deleting bound ARQs without a service token must fail.
         exc = self.assertRaises(
             lib_exc.Forbidden,
             client.delete_accelerator_request_by_instance_uuid,
-            instance_uuid)
-        self.assertIn(
-            'requires a service token',
-            str(exc).lower())
+            instance_uuid,
+        )
+        self.assertIn('requires a service token', str(exc).lower())
 
         # Stop the server first so Nova releases its side, allowing
         # Cyborg to cleanly delete the ARQs. create_server() already
@@ -90,7 +91,8 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
         # the server if the service-token delete below fails.
         self.servers_client.stop_server(instance_uuid)
         waiters.wait_for_server_status(
-            self.servers_client, instance_uuid, 'SHUTOFF')
+            self.servers_client, instance_uuid, 'SHUTOFF'
+        )
 
         # Delete with a service token succeeds. A dedicated client
         # instance carries the service token so the shared admin
@@ -101,14 +103,16 @@ class TestARQServiceTokenOps(manager.ScenarioTest):
             self.os_admin.cyborg_client.auth_provider,
             'accelerator',
             CONF.identity.region,
-            service_token=self._service_token)
-        svc_client.delete_accelerator_request_by_instance_uuid(
-            instance_uuid)
+            service_token=self._service_token,
+        )
+        svc_client.delete_accelerator_request_by_instance_uuid(instance_uuid)
 
         # Verify the ARQs are gone.
         arqs = client.list_accelerator_request()['arqs']
         remaining = [a for a in arqs if a['instance_uuid'] == instance_uuid]
         self.assertEqual(
-            [], remaining,
-            "ARQs for instance %s should have been deleted" % instance_uuid)
+            [],
+            remaining,
+            "ARQs for instance %s should have been deleted" % instance_uuid,
+        )
         # Server cleanup is handled by create_server's addCleanup.

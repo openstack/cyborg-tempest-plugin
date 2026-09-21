@@ -17,56 +17,67 @@
 from oslo_config import cfg
 
 service_available_group = cfg.OptGroup(
-    name="service_available",
-    title="Available OpenStack Services"
+    name="service_available", title="Available OpenStack Services"
 )
 
 ServiceAvailableGroup = [
-    cfg.BoolOpt("cyborg", default=True,
-                help="Whether or not cyborg is expected to be available")
+    cfg.BoolOpt(
+        "cyborg",
+        default=True,
+        help="Whether or not cyborg is expected to be available",
+    )
 ]
 
 cyborg_group = cfg.OptGroup(
-    name="cyborg",
-    title="Cyborg Tempest Plugin Options"
+    name="cyborg", title="Cyborg Tempest Plugin Options"
 )
 
 CyborgGroup = [
-    cfg.StrOpt("image_ref",
-               default="",
-               help="Optional image ID for Cyborg scenario tests. "
-                    "Defaults to compute.image_ref when unset."),
-    cfg.StrOpt("flavor_ref",
-               default="",
-               help="Optional base flavor ID for Cyborg scenario "
-                    "tests. Defaults to compute.flavor_ref when "
-                    "unset."),
+    cfg.StrOpt(
+        "image_ref",
+        default="",
+        help="Optional image ID for Cyborg scenario tests. "
+        "Defaults to compute.image_ref when unset.",
+    ),
+    cfg.StrOpt(
+        "flavor_ref",
+        default="",
+        help="Optional base flavor ID for Cyborg scenario "
+        "tests. Defaults to compute.flavor_ref when "
+        "unset.",
+    ),
 ]
 
 cyborg_pci_group = cfg.OptGroup(
-    name="cyborg_pci",
-    title="Cyborg PCI Driver Tempest Plugin Options"
+    name="cyborg_pci", title="Cyborg PCI Driver Tempest Plugin Options"
 )
 
 CyborgPCIGroup = [
-    cfg.StrOpt("device_profile_name",
-               default="",
-               help="Device profile name used by Cyborg PCI scenario tests."),
-    cfg.StrOpt("vendor_id",
-               default="",
-               help="Expected PCI vendor ID visible in the guest."),
-    cfg.StrOpt("product_id",
-               default="",
-               help="Expected PCI product ID visible in the guest."),
-    cfg.BoolOpt("expected_managed",
-                default=None,
-                help="Expected value of attach_handle_info.managed for "
-                     "PCI ARQs. Leave unset to skip assertion."),
+    cfg.StrOpt(
+        "device_profile_name",
+        default="",
+        help="Device profile name used by Cyborg PCI scenario tests.",
+    ),
+    cfg.StrOpt(
+        "vendor_id",
+        default="",
+        help="Expected PCI vendor ID visible in the guest.",
+    ),
+    cfg.StrOpt(
+        "product_id",
+        default="",
+        help="Expected PCI product ID visible in the guest.",
+    ),
+    cfg.BoolOpt(
+        "expected_managed",
+        default=None,
+        help="Expected value of attach_handle_info.managed for "
+        "PCI ARQs. Leave unset to skip assertion.",
+    ),
 ]
 
 cyborg_policy_group = cfg.OptGroup(
-    name="cyborg_policy",
-    title="Cyborg Policy Options"
+    name="cyborg_policy", title="Cyborg Policy Options"
 )
 
 CyborgPolicyGroup = [
@@ -74,8 +85,8 @@ CyborgPolicyGroup = [
         "enforce_new_defaults",
         default=False,
         help="Whether the Cyborg API uses oslo.policy's new defaults. "
-             "Scope is always enforced for policies that declare scope_types; "
-             "this option only selects new defaults without deprecated-rule "
-             "fallbacks.",
-    ),
+        "Scope is always enforced for policies that declare scope_types; "
+        "this option only selects new defaults without deprecated-rule "
+        "fallbacks.",
+    )
 ]
