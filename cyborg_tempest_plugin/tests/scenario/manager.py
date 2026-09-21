@@ -14,16 +14,15 @@
 #    under the License.
 
 
-from cyborg_tempest_plugin.services import cyborg_rest_client as clients
-from cyborg_tempest_plugin.services.cyborg_rest_client import get_auth_provider
-
 from oslo_log import log
-
-from tempest.common import credentials_factory as common_creds
 from tempest import config
+from tempest.common import credentials_factory as common_creds
 from tempest.lib.common.utils import data_utils
 from tempest.lib.common.utils import test_utils
 from tempest.scenario import manager
+
+from cyborg_tempest_plugin.services import cyborg_rest_client as clients
+from cyborg_tempest_plugin.services.cyborg_rest_client import get_auth_provider
 
 
 CONF = config.CONF

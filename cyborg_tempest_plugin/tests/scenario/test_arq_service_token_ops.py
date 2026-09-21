@@ -13,15 +13,16 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from tempest import config
 from tempest.common import utils
 from tempest.common import waiters
-from tempest import config
 from tempest.lib import decorators
 from tempest.lib import exceptions as lib_exc
 
 from cyborg_tempest_plugin.services import cyborg_data
 from cyborg_tempest_plugin.services import cyborg_rest_client as clients
 from cyborg_tempest_plugin.tests.scenario import manager
+
 
 CONF = config.CONF
 

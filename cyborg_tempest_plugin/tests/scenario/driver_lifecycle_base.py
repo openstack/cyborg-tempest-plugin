@@ -16,12 +16,13 @@
 import socket
 
 from oslo_log import log as logging
+from tempest import config
 from tempest.common import compute
 from tempest.common import waiters
-from tempest import config
+from tempest.lib import exceptions as lib_exc
 from tempest.lib.common.utils import data_utils
 from tempest.lib.common.utils import test_utils
-from tempest.lib import exceptions as lib_exc
+
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)

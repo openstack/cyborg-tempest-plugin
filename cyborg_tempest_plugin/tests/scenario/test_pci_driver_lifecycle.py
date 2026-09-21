@@ -13,12 +13,13 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from tempest.common import utils
 from tempest import config
+from tempest.common import utils
 from tempest.lib import decorators
 
 from cyborg_tempest_plugin.tests.scenario import driver_lifecycle_base
 from cyborg_tempest_plugin.tests.scenario import manager
+
 
 CONF = config.CONF
 

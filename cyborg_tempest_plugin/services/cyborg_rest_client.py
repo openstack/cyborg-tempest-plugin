@@ -13,10 +13,10 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from oslo_log import log as logging
-from oslo_serialization import jsonutils as json
 from urllib import parse
 
+from oslo_log import log as logging
+from oslo_serialization import jsonutils as json
 from tempest import config
 from tempest.lib import auth
 from tempest.lib.common import rest_client
