@@ -335,9 +335,9 @@ fi
         def _check():
             try:
                 with socket.create_connection((ip, port), timeout=5):
-                    LOG.debug(f"Connection to {ip}: {port} successful")
+                    LOG.debug("Connection to %s: %s successful", ip, port)
             except OSError:
-                LOG.debug(f"Connection to {ip}: {port} failed")
+                LOG.debug("Connection to %s: %s failed", ip, port)
                 return True
             return False
 
