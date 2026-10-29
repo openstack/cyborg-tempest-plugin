@@ -35,6 +35,15 @@ SCENARIO_DEVICE_PROFILE_DATA = [
     }
 ]
 
+FPGA_PROGRAM_DEVICE_PROFILE_DATA = [
+    {
+        "name": "fpga-program-scenario",
+        "groups": [
+            {"resources:FPGA": "1", "trait:CUSTOM_FAKE_DEVICE": "required"}
+        ],
+    }
+]
+
 SERVICE_TOKEN_DEVICE_PROFILE_DATA = [
     {
         "name": "fpga-svc-token-test",

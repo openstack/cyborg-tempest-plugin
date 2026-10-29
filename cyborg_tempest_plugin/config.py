@@ -47,6 +47,24 @@ CyborgGroup = [
         "tests. Defaults to compute.flavor_ref when "
         "unset.",
     ),
+    cfg.BoolOpt(
+        "fpga_program",
+        default=False,
+        help="Enable FPGA programming scenario tests.",
+    ),
+]
+
+cyborg_fpga_group = cfg.OptGroup(
+    name="cyborg_fpga", title="Cyborg FPGA Tempest Plugin Options"
+)
+
+CyborgFPGAGroup = [
+    cfg.StrOpt(
+        "device_profile_name",
+        default="",
+        help="Existing FPGA device profile for the programming scenario. "
+        "When unset, the test creates a profile for the fake driver.",
+    )
 ]
 
 cyborg_pci_group = cfg.OptGroup(

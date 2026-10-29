@@ -159,6 +159,25 @@ class CyborgRestClient(rest_client.RestClient):
         resp, body = self.get("/deployables/%s" % deployable_uuid)
         return self._response_helper(resp, body)
 
+    def program_deployable(self, deployable_uuid, image_uuid):
+        """Program an FPGA deployable with the given bitstream image.
+
+        :param deployable_uuid: UUID of the target deployable.
+        :param image_uuid: UUID of the Glance image containing the bitstream.
+        """
+        url = "/deployables/%s/program" % deployable_uuid
+        body = json.dump_as_bytes(
+            [
+                {
+                    'path': '/program',
+                    'op': 'replace',
+                    'value': [{'image_uuid': image_uuid}],
+                }
+            ]
+        )
+        resp, body = self.patch(url, body=body)
+        return self._response_helper(resp, body)
+
     def list_attributes(self):
         resp, body = self.get(self.ATTR_URL)
         return self._response_helper(resp, body)
